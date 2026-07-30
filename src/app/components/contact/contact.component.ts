@@ -16,8 +16,8 @@ export class ContactComponent implements AfterViewInit {
     {
       icon: 'email',
       label: 'Email',
-      value: 'mahmodnabil2328@gmail.com',
-      link: 'mailto:mahmodnabil2328@gmail.com',
+      value: 'mahmoudnabil2328@gmail.com',
+      link: 'mailto:mahmoudnabil2328@gmail.com',
     },
     {
       icon: 'whatsapp',
