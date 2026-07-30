@@ -29,7 +29,7 @@ export class ContactComponent implements AfterViewInit {
       icon: 'linkedin',
       label: 'LinkedIn',
       value: 'Mahmoud Nabil',
-      link: 'https://www.linkedin.com/in/mahmoud-elkholy-5480821ab/',
+      link: 'https://www.linkedin.com/in/mahmoud-nabil-5480821ab/',
     },
     {
       icon: 'github',
