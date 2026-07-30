@@ -1,4 +1,5 @@
 import { Component, AfterViewInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -13,25 +14,25 @@ gsap.registerPlugin(ScrollTrigger);
 export class ContactComponent implements AfterViewInit {
   contactInfo = [
     {
-      icon: '📧',
+      icon: 'email',
       label: 'Email',
       value: 'mahmodnabil2328@gmail.com',
       link: 'mailto:mahmodnabil2328@gmail.com',
     },
     {
-      icon: '📱',
-      label: 'Phone',
+      icon: 'whatsapp',
+      label: 'WhatsApp',
       value: '+201027197422',
-      link: 'tel:+201027197422',
+      link: 'https://wa.me/201027197422',
     },
     {
-      icon: '💼',
+      icon: 'linkedin',
       label: 'LinkedIn',
       value: 'Mahmoud Nabil',
       link: 'https://www.linkedin.com/in/mahmoud-elkholy-5480821ab/',
     },
     {
-      icon: '💻',
+      icon: 'github',
       label: 'GitHub',
       value: 'mahmoudnabil',
       link: 'https://github.com/Mahmoudnabil911',
@@ -45,48 +46,61 @@ export class ContactComponent implements AfterViewInit {
     message: '',
   };
 
-  ngAfterViewInit(): void {
-    // Temporarily disabled animation for debugging
-    // this.animateContact();
-  }
+  isSubmitting = false;
+  submitSuccess = false;
+  submitError = false;
 
-  animateContact(): void {
-    // gsap.from('.contact-card', {
-    //   scrollTrigger: {
-    //     trigger: '.contact-section',
-    //     start: 'top 80%',
-    //     end: 'bottom 20%',
-    //     toggleActions: 'play none none reverse',
-    //   },
-    //   opacity: 0,
-    //   y: 30,
-    //   duration: 0.6,
-    //   stagger: 0.1,
-    //   ease: 'power3.out',
-    // });
-    // gsap.from('.contact-form', {
-    //   scrollTrigger: {
-    //     trigger: '.contact-section',
-    //     start: 'top 80%',
-    //     end: 'bottom 20%',
-    //     toggleActions: 'play none none reverse',
-    //   },
-    //   opacity: 0,
-    //   x: 50,
-    //   duration: 0.8,
-    //   ease: 'power3.out',
-    // });
+  constructor(private http: HttpClient) { }
+
+  ngAfterViewInit(): void {
+    const contactElements = gsap.utils.toArray('.contact-card, .form-group, .submit-btn');
+
+    gsap.fromTo(
+      contactElements as HTMLElement[],
+      {
+        opacity: 0,
+        y: 30,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.contact-section',
+          start: 'top 80%',
+        },
+      }
+    );
   }
 
   onSubmit(): void {
-    console.log('Form submitted:', this.formData);
-    alert('Thank you for your message! I will get back to you soon.');
-    // Reset form
-    this.formData = {
-      name: '',
-      email: '',
-      subject: '',
-      message: '',
-    };
+    if (!this.formData.name || !this.formData.email || !this.formData.message) {
+      return;
+    }
+
+    this.isSubmitting = true;
+
+    const subject = encodeURIComponent(this.formData.subject || 'New Contact from Portfolio');
+    const body = encodeURIComponent(
+      `Name: ${this.formData.name}\n` +
+      `Email: ${this.formData.email}\n\n` +
+      `Message:\n${this.formData.message}`
+    );
+
+    // Open user's default email client in a new tab (if possible) or same window
+    window.open(`mailto:mahmodnabil2328@gmail.com?subject=${subject}&body=${body}`, '_blank');
+
+    // Show success for a short time
+    setTimeout(() => {
+      this.isSubmitting = false;
+      this.submitSuccess = true;
+      this.formData = { name: '', email: '', subject: '', message: '' };
+
+      setTimeout(() => {
+        this.submitSuccess = false;
+      }, 5000);
+    }, 1000);
   }
 }

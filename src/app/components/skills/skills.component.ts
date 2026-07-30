@@ -14,7 +14,7 @@ export class SkillsComponent implements AfterViewInit {
   skillCategories = [
     {
       title: 'Frontend & Frameworks',
-      icon: '⚛️',
+      icon: 'frontend',
       skills: [
         { name: 'Angular', level: 95 },
         { name: 'TypeScript', level: 90 },
@@ -25,7 +25,7 @@ export class SkillsComponent implements AfterViewInit {
     },
     {
       title: 'State & Data',
-      icon: '🔄',
+      icon: 'data',
       skills: [
         { name: 'RxJS', level: 85 },
         { name: 'RESTful APIs', level: 90 },
@@ -36,7 +36,7 @@ export class SkillsComponent implements AfterViewInit {
     },
     {
       title: 'Performance & Animations',
-      icon: '✨',
+      icon: 'animations',
       skills: [
         { name: 'GSAP', level: 85 },
         { name: 'ScrollTrigger', level: 80 },
@@ -47,7 +47,7 @@ export class SkillsComponent implements AfterViewInit {
     },
     {
       title: 'Tools & Others',
-      icon: '🛠️',
+      icon: 'tools',
       skills: [
         { name: 'Nx Workspace', level: 75 },
         { name: 'Git & GitHub', level: 85 },

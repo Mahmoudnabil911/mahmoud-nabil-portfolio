@@ -80,8 +80,10 @@ export class HeroComponent implements OnInit, OnDestroy {
   }
 
   downloadCV(): void {
-    // Placeholder - implement actual CV download
-    alert('CV download functionality will be implemented');
+    const link = document.createElement('a');
+    link.href = 'assets/cv/MahmoudNabil.pdf';
+    link.download = 'MahmoudNabil.pdf';
+    link.click();
   }
 
   scrollToProjects(): void {

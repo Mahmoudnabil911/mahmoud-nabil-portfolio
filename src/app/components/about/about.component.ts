@@ -18,7 +18,7 @@ export class AboutComponent implements OnInit, AfterViewInit {
     { value: '100%', label: 'Client Satisfaction' },
   ];
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngAfterViewInit(): void {
     // Temporarily disabled animation for debugging

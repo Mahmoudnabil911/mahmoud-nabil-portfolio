@@ -17,7 +17,7 @@ export class ProjectsComponent implements AfterViewInit {
       subtitle: 'AI Healthcare Platform',
       description:
         'Comprehensive healthcare platform with AI-powered diagnostics, patient management, and telemedicine features. Built with Angular for seamless user experience.',
-      image: '/Layer_1.png',
+      image: '/cairah_logo.gif',
       technologies: ['Angular', 'TypeScript', 'RxJS', 'Bootstrap', 'REST API'],
       demoUrl: 'https://cairah.ai/home',
       // githubUrl: '#',
@@ -30,7 +30,7 @@ export class ProjectsComponent implements AfterViewInit {
         'Smart parking solution with real-time availability, booking system, payment integration, and location-based services.',
       image: '/about-parq.jpg',
       technologies: ['Angular', 'Google Maps API', 'RxJS', 'Payment Gateway'],
-      demoUrl: '#',
+      demoUrl: 'https://tryparq.co/',
       // githubUrl: '#',
       highlights: [
         'Real-time Tracking',
@@ -39,11 +39,36 @@ export class ProjectsComponent implements AfterViewInit {
       ],
     },
     {
+      title: 'Antika World',
+      subtitle: 'Curating the past, Designing the future',
+      description:
+        'Antika World is transforming Sofia\'s iconic TSUM into a vibrant destination of retail, dining, culture, and immersive experiences. Heritage and innovation redefine the city, creating opportunities for communities, businesses, and international connections.',
+      image: '/assets/white-logo.png',
+      technologies: ['Angular', 'TypeScript', 'Bootstrap', 'State Management'],
+      demoUrl: 'https://antika.world/',
+      // githubUrl: '#',
+      highlights: ['Cultural Experiences', 'Retail Directory', 'Event Calendar'],
+      // inProgress: true,
+    },
+    {
+      title: 'BABU',
+      subtitle: 'Point of Sale (POS) System Dashboard',
+      description:
+        'A comprehensive Point of Sale (POS) and inventory management dashboard designed to streamline business operations. It features an intuitive interface for processing transactions, managing product stock, and monitoring real-time sales analytics to enhance operational.',
+      image: '/assets/unnamed-transparent.png',
+      imageClass: 'babu-img',
+      technologies: ['Angular', 'TypeScript', 'Tailwind', 'State Management'],
+      demoUrl: 'https://pos.babupos.com/#/dashboard',
+      // githubUrl: '#',
+      highlights: ['Real-time Analytics', 'Inventory Management', 'POS Dashboard'],
+      // inProgress: true,
+    },
+    {
       title: 'LMS',
       subtitle: 'Learning Management System',
       description:
         'Feature-rich learning platform with course management, interactive quizzes, progress tracking, and video streaming capabilities.',
-      image: '📚',
+      image: 'lms',
       technologies: ['Angular', 'SCSS', 'RxJS', 'GSAP', 'REST API'],
       demoUrl: '#',
       // githubUrl: '#',
@@ -55,7 +80,7 @@ export class ProjectsComponent implements AfterViewInit {
       subtitle: 'Platform for Associations',
       description:
         'Community platform for managing associations, events, memberships, and communications with advanced admin dashboard.',
-      image: '🤝',
+      image: 'khardah',
       technologies: ['Angular', 'TypeScript', 'Bootstrap', 'State Management'],
       demoUrl: '#',
       // githubUrl: '#',
