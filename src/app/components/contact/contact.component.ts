@@ -53,26 +53,34 @@ export class ContactComponent implements AfterViewInit {
   constructor(private http: HttpClient) { }
 
   ngAfterViewInit(): void {
-    const contactElements = gsap.utils.toArray('.contact-card, .form-group, .submit-btn');
-
-    gsap.fromTo(
-      contactElements as HTMLElement[],
-      {
-        opacity: 0,
-        y: 30,
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '.contact-section',
+        start: 'top 95%',
+        once: true,
       },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.contact-section',
-          start: 'top 80%',
-        },
-      }
-    );
+    });
+
+    tl.fromTo('.contact-info',
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }
+    )
+      .fromTo('.contact-form-wrapper',
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' },
+        '<'
+      )
+      .fromTo('.contact-card',
+        { x: -20, opacity: 0 },
+        { x: 0, opacity: 1, stagger: 0.1, duration: 0.4 },
+        '-=0.3'
+      )
+      .fromTo('.form-group, .submit-btn',
+        { x: 20, opacity: 0 },
+        { x: 0, opacity: 1, stagger: 0.1, duration: 0.4 },
+        '<'
+      )
+      .to({}, { duration: 0.2 });
   }
 
   onSubmit(): void {

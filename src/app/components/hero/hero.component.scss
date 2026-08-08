@@ -6,6 +6,46 @@
     position: relative;
     overflow: hidden;
     padding: 8rem 2rem 4rem;
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: 20;
+        pointer-events: none;
+        border: 1px solid transparent;
+        background: conic-gradient(from var(--angle),
+                transparent 0%,
+                transparent 65%,
+                rgba(0, 242, 254, 0.2),
+                #667eea,
+                #764ba2,
+                #f093fb,
+                transparent 100%) border-box;
+        -webkit-mask:
+            linear-gradient(#fff 0 0) padding-box,
+            linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        animation: spin-snake 4s linear infinite;
+        opacity: 0.9;
+    }
+}
+
+@property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes spin-snake {
+    0% {
+        --angle: 0deg;
+    }
+
+    100% {
+        --angle: 360deg;
+    }
 }
 
 .hero-background {
@@ -54,9 +94,12 @@
 }
 
 @keyframes float {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(0) scale(1);
     }
+
     50% {
         transform: translateY(-30px) scale(1.1);
     }
@@ -75,39 +118,93 @@
 
 .float-el {
     position: absolute;
-    font-family: 'Fira Code', monospace; /* Monospace for code feeling */
+    font-family: 'Fira Code', monospace;
+    /* Monospace for code feeling */
     font-size: 2.5rem;
     font-weight: 800;
-    color: rgba(255, 255, 255, 0.07); /* Very subtle */
+    color: rgba(255, 255, 255, 0.07);
+    /* Very subtle */
     user-select: none;
     animation: floating-code 15s linear infinite;
-    
+
     @media (max-width: 768px) {
         font-size: 1.5rem;
     }
 }
 
-.el-1 { top: 15%; left: 15%; animation-duration: 25s; animation-delay: -5s; }
-.el-2 { top: 75%; left: 85%; animation-duration: 20s; animation-delay: -2s; font-size: 3rem; }
-.el-3 { top: 80%; left: 10%; animation-duration: 18s; animation-delay: -8s; color: rgba(102, 126, 234, 0.15); }
-.el-4 { top: 20%; left: 80%; animation-duration: 22s; animation-delay: -12s; opacity: 0.3; } /* Angular Logo */
-.el-5 { top: 40%; left: 5%; animation-duration: 16s; animation-delay: -1s; }
-.el-6 { top: 60%; left: 90%; animation-duration: 24s; animation-delay: -10s; font-size: 4rem; color: rgba(245, 87, 108, 0.1); }
-.el-7 { top: 30%; left: 45%; animation-duration: 19s; animation-delay: -4s; font-size: 5rem; }
+.el-1 {
+    top: 15%;
+    left: 15%;
+    animation-duration: 25s;
+    animation-delay: -5s;
+}
+
+.el-2 {
+    top: 75%;
+    left: 85%;
+    animation-duration: 20s;
+    animation-delay: -2s;
+    font-size: 3rem;
+}
+
+.el-3 {
+    top: 80%;
+    left: 10%;
+    animation-duration: 18s;
+    animation-delay: -8s;
+    color: rgba(102, 126, 234, 0.15);
+}
+
+.el-4 {
+    top: 20%;
+    left: 80%;
+    animation-duration: 22s;
+    animation-delay: -12s;
+    opacity: 0.3;
+}
+
+/* Angular Logo */
+.el-5 {
+    top: 40%;
+    left: 5%;
+    animation-duration: 16s;
+    animation-delay: -1s;
+}
+
+.el-6 {
+    top: 60%;
+    left: 90%;
+    animation-duration: 24s;
+    animation-delay: -10s;
+    font-size: 4rem;
+    color: rgba(245, 87, 108, 0.1);
+}
+
+.el-7 {
+    top: 30%;
+    left: 45%;
+    animation-duration: 19s;
+    animation-delay: -4s;
+    font-size: 5rem;
+}
 
 @keyframes floating-code {
     0% {
         transform: translate(0, 0) rotate(0deg);
     }
+
     25% {
         transform: translate(20px, 30px) rotate(10deg);
     }
+
     50% {
         transform: translate(-10px, 50px) rotate(-5deg);
     }
+
     75% {
         transform: translate(-30px, 15px) rotate(-15deg);
     }
+
     100% {
         transform: translate(0, 0) rotate(0deg);
     }
@@ -278,9 +375,14 @@
     .float-el {
         color: rgba(0, 0, 0, 0.04);
     }
-    
-    .el-3 { color: rgba(102, 126, 234, 0.1); }
-    .el-6 { color: rgba(245, 87, 108, 0.08); }
+
+    .el-3 {
+        color: rgba(102, 126, 234, 0.1);
+    }
+
+    .el-6 {
+        color: rgba(245, 87, 108, 0.08);
+    }
 }
 
 @media (max-width: 768px) {

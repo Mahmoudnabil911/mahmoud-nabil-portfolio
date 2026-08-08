@@ -21,47 +21,32 @@ export class AboutComponent implements OnInit, AfterViewInit {
   ngOnInit(): void { }
 
   ngAfterViewInit(): void {
-    // Temporarily disabled animation for debugging
-    // this.animateOnScroll();
+    this.animateOnScroll();
   }
 
   animateOnScroll(): void {
-    // gsap.from('.about-image', {
-    //   scrollTrigger: {
-    //     trigger: '.about-section',
-    //     start: 'top 80%',
-    //     end: 'bottom 20%',
-    //     toggleActions: 'play none none reverse',
-    //   },
-    //   opacity: 0,
-    //   x: -50,
-    //   duration: 1,
-    //   ease: 'power3.out',
-    // });
-    // gsap.from('.about-content', {
-    //   scrollTrigger: {
-    //     trigger: '.about-section',
-    //     start: 'top 80%',
-    //     end: 'bottom 20%',
-    //     toggleActions: 'play none none reverse',
-    //   },
-    //   opacity: 0,
-    //   x: 50,
-    //   duration: 1,
-    //   ease: 'power3.out',
-    // });
-    // gsap.from('.stat-card', {
-    //   scrollTrigger: {
-    //     trigger: '.stats-grid',
-    //     start: 'top 90%',
-    //     end: 'bottom 20%',
-    //     toggleActions: 'play none none reverse',
-    //   },
-    //   opacity: 0,
-    //   y: 30,
-    //   duration: 0.6,
-    //   stagger: 0.1,
-    //   ease: 'power3.out',
-    // });
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '.about-section',
+        start: 'top 90%',
+        once: true,
+      },
+    });
+
+    tl.fromTo('.about-image', 
+        { x: '-100vw', opacity: 0, rotation: -15 },
+        { x: 0, opacity: 1, rotation: 0, duration: 1, ease: 'power3.out' }
+      )
+      .fromTo('.about-content', 
+        { x: '100vw', opacity: 0 },
+        { x: 0, opacity: 1, duration: 1, ease: 'power3.out' }, 
+        '<'
+      )
+      .fromTo('.stat-card', 
+        { y: 100, scale: 0.8, opacity: 0 },
+        { y: 0, scale: 1, opacity: 1, duration: 0.8, stagger: 0.2, ease: 'back.out(1.5)' }, 
+        '-=0.5'
+      )
+      .to({}, { duration: 0.5 });
   }
 }

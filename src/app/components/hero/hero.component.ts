@@ -1,5 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 @Component({
   selector: 'app-hero',
@@ -7,7 +10,7 @@ import gsap from 'gsap';
   templateUrl: './hero.component.html',
   styleUrl: './hero.component.scss',
 })
-export class HeroComponent implements OnInit, OnDestroy {
+export class HeroComponent implements OnInit, OnDestroy, AfterViewInit {
   typedText = '';
   fullText =
     'Building high-performance Angular apps with modern UI/UX and advanced animations.';
@@ -18,10 +21,45 @@ export class HeroComponent implements OnInit, OnDestroy {
     this.startTypingAnimation();
   }
 
+  ngAfterViewInit(): void {
+    this.initParallax();
+  }
+
   ngOnDestroy(): void {
     if (this.typingInterval) {
       clearInterval(this.typingInterval);
     }
+  }
+
+  initParallax(): void {
+    const floatEls = document.querySelectorAll('.float-el');
+    floatEls.forEach((el: any, index) => {
+      gsap.to(el, {
+        y: (Math.random() > 0.5 ? -1 : 1) * (100 + Math.random() * 100),
+        rotation: Math.random() * 90 - 45,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
+        },
+      });
+    });
+
+    const blobs = document.querySelectorAll('.blob');
+    blobs.forEach((blob: any, index) => {
+      gsap.to(blob, {
+        y: -(150 + index * 50),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
+        },
+      });
+    });
   }
 
   animateHero(): void {
@@ -56,7 +94,7 @@ export class HeroComponent implements OnInit, OnDestroy {
       ease: 'power3.out',
     });
 
-    // Animate background blobs
+    // Animate background blobs heartbeat
     gsap.to('.blob', {
       scale: 1.2,
       duration: 4,

@@ -59,36 +59,27 @@ export class SkillsComponent implements AfterViewInit {
   ];
 
   ngAfterViewInit(): void {
-    // Temporarily disabled animation for debugging
-    // this.animateSkills();
+    this.animateSkills();
   }
 
   animateSkills(): void {
-    // gsap.from('.skill-category', {
-    //   scrollTrigger: {
-    //     trigger: '.skills-section',
-    //     start: 'top 80%',
-    //     end: 'bottom 20%',
-    //     toggleActions: 'play none none reverse',
-    //   },
-    //   opacity: 0,
-    //   y: 50,
-    //   duration: 0.6,
-    //   stagger: 0.2,
-    //   ease: 'power3.out',
-    // });
-    // // Animate progress bars
-    // gsap.from('.skill-progress-fill', {
-    //   scrollTrigger: {
-    //     trigger: '.skills-grid',
-    //     start: 'top 70%',
-    //     end: 'bottom 20%',
-    //     toggleActions: 'play none none reverse',
-    //   },
-    //   width: 0,
-    //   duration: 1.5,
-    //   stagger: 0.05,
-    //   ease: 'power2.out',
-    // });
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '.skills-section',
+        start: 'top 90%',
+        once: true,
+      },
+    });
+
+    tl.fromTo('.skill-category',
+      { y: 60, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.8, stagger: 0.2, ease: 'power3.out' }
+    )
+      .fromTo('.skill-progress-fill',
+        { width: 0 },
+        { width: (i, target) => target.getAttribute('data-level') + '%', duration: 1, stagger: 0.05, ease: 'power2.out' },
+        '-=0.5'
+      )
+      .to({}, { duration: 0.5 });
   }
 }

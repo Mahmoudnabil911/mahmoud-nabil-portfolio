@@ -106,18 +106,23 @@ export class ExperienceComponent implements AfterViewInit {
   }
 
   animateTimeline(): void {
-    gsap.from('.timeline-item', {
+    const tl = gsap.timeline({
       scrollTrigger: {
         trigger: '.experience-section',
-        start: 'top 80%',
-        end: 'bottom 20%',
-        toggleActions: 'play none none reverse',
+        start: 'top 90%',
+        once: true,
       },
-      opacity: 0,
-      x: -50,
-      duration: 0.8,
-      stagger: 0.3,
-      ease: 'power3.out',
     });
+
+    tl.fromTo('.timeline-marker',
+      { scale: 0, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.6, stagger: 0.2, ease: 'back.out(2)' }
+    )
+      .fromTo('.timeline-content',
+        { y: 100, opacity: 0, rotationX: -30, transformOrigin: 'top center' },
+        { y: 0, opacity: 1, rotationX: 0, duration: 1, stagger: 0.2, ease: 'power3.out' },
+        '<0.2'
+      )
+      .to({}, { duration: 0.5 });
   }
 }

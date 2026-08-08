@@ -23,7 +23,7 @@
                         </div>
                     </div>
 
-                    <p class="experience-description">{{ exp.description }}</p>
+                    <p class="experience-description" *ngIf="exp.description">{{ exp.description }}</p>
 
                     <div class="experience-achievements">
                         <ul class="achievements-list">
