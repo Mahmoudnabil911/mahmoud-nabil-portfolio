@@ -56,31 +56,30 @@ export class ContactComponent implements AfterViewInit {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: '.contact-section',
-        start: 'top 95%',
+        start: 'top bottom', // Trigger immediately when it enters the screen
         once: true,
       },
     });
 
     tl.fromTo('.contact-info',
       { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }
+      { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }
     )
       .fromTo('.contact-form-wrapper',
         { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
         '<'
       )
       .fromTo('.contact-card',
         { x: -20, opacity: 0 },
-        { x: 0, opacity: 1, stagger: 0.1, duration: 0.4 },
-        '-=0.3'
+        { x: 0, opacity: 1, stagger: 0.05, duration: 0.3 },
+        '-=0.2'
       )
       .fromTo('.form-group, .submit-btn',
         { x: 20, opacity: 0 },
-        { x: 0, opacity: 1, stagger: 0.1, duration: 0.4 },
+        { x: 0, opacity: 1, stagger: 0.05, duration: 0.3 },
         '<'
-      )
-      .to({}, { duration: 0.2 });
+      );
   }
 
   onSubmit(): void {

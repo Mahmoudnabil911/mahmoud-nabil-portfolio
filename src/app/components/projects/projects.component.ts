@@ -18,6 +18,7 @@ export class ProjectsComponent implements AfterViewInit {
       description:
         'Comprehensive healthcare platform with AI-powered diagnostics, patient management, and telemedicine features. Built with Angular for seamless user experience.',
       image: '/cairah_logo.gif',
+      imageClass: 'contain-img',
       technologies: ['Angular', 'TypeScript', 'RxJS', 'Bootstrap', 'REST API'],
       demoUrl: 'https://cairah.ai/home',
       // githubUrl: '#',
@@ -57,6 +58,7 @@ export class ProjectsComponent implements AfterViewInit {
       description:
         'Developed the interactive frontend platform for a luxury urban destination in Sofia, showcasing dynamic business portfolios including co-working spaces, retail, and smart mobility solutions with a focus on immersive user experiences.',
       image: '/assets/white-logo.png',
+      imageClass: 'contain-img',
       technologies: ['Angular', 'TypeScript', 'Bootstrap', 'State Management'],
       demoUrl: 'https://antika.world/',
       // githubUrl: '#',
