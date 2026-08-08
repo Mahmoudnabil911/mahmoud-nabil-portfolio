@@ -104,6 +104,7 @@ export class ExperienceComponent implements AfterViewInit {
   }
 
   animateTimeline(): void {
+    // ── Initial states ──
     gsap.set('.timeline-marker', { scale: 0, opacity: 0 });
     gsap.set('.timeline-content', {
       y: 80,
@@ -111,12 +112,21 @@ export class ExperienceComponent implements AfterViewInit {
       rotationX: -20,
       transformOrigin: 'top center',
     });
+    // Explicitly set initial state for tech tags to avoid gsap.from glitches
+    gsap.set('.tech-tag', { opacity: 0, scale: 0.5 });
 
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: '.experience-section',
-        start: 'top 82%',
+        start: 'top 85%',
         once: true,
+        invalidateOnRefresh: true, // Recalculates if DOM shifts
+        onEnter: () => {
+          // Safety fallback: ensure they become visible eventually
+          setTimeout(() => {
+            gsap.to('.timeline-content, .tech-tag, .timeline-marker', { opacity: 1 });
+          }, 3000);
+        }
       },
     });
 
@@ -138,24 +148,17 @@ export class ExperienceComponent implements AfterViewInit {
           ease: 'power3.out',
         },
         '<0.1'
+      )
+      .to(
+        '.tech-tag',
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.4,
+          stagger: 0.04,
+          ease: 'back.out(2)',
+        },
+        '-=0.4' // overlap with the end of the content animation
       );
-
-    // Tech tags pop in with bounce
-    ScrollTrigger.create({
-      trigger: '.timeline',
-      start: 'top 75%',
-      once: true,
-      onEnter: () => {
-        document.querySelectorAll('.tech-tag').forEach((tag, i) => {
-          gsap.from(tag, {
-            opacity: 0,
-            scale: 0.5,
-            duration: 0.4,
-            delay: i * 0.04,
-            ease: 'back.out(2)',
-          });
-        });
-      },
-    });
   }
 }
