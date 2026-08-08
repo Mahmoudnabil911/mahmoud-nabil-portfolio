@@ -14,47 +14,58 @@ gsap.registerPlugin(ScrollTrigger);
 export class SkillsComponent implements AfterViewInit {
   skillCategories = [
     {
-      title: 'Frontend & Frameworks',
+      title: 'Core Technologies',
       icon: 'frontend',
       skills: [
-        { name: 'Angular', level: 95 },
-        { name: 'TypeScript', level: 90 },
-        { name: 'HTML5/CSS3', level: 95 },
-        { name: 'SCSS/SASS', level: 90 },
-        { name: 'Bootstrap', level: 85 },
+        { name: 'Angular' },
+        { name: 'TypeScript' },
+        { name: 'JavaScript' },
+        { name: 'HTML5' },
+        { name: 'CSS3' },
+        { name: 'SCSS' },
+        { name: 'Tailwind CSS' },
+        { name: 'Angular Material' },
+        { name: 'PrimeNG' },
+        { name: 'Bootstrap' },
       ],
     },
     {
-      title: 'State & Data',
+      title: 'Angular Ecosystem & Data',
       icon: 'data',
       skills: [
-        { name: 'RxJS', level: 85 },
-        { name: 'RESTful APIs', level: 90 },
-        { name: 'State Management', level: 80 },
-        { name: 'Services', level: 90 },
-        { name: 'HTTP Client', level: 85 },
+        { name: 'RxJS' },
+        { name: 'NgRx' },
+        { name: 'Reactive Forms' },
+        { name: 'Angular Router' },
+        { name: 'Standalone Components' },
+        { name: 'Dependency Injection' },
+        { name: 'REST APIs' },
       ],
     },
     {
-      title: 'Performance & Animations',
+      title: 'Performance & Design',
       icon: 'animations',
       skills: [
-        { name: 'GSAP', level: 85 },
-        { name: 'ScrollTrigger', level: 80 },
-        { name: 'CSS Animations', level: 90 },
-        { name: 'Performance Optimization', level: 85 },
-        { name: 'Lazy Loading', level: 80 },
+        { name: 'Optimizing Web Performance' },
+        { name: 'Lazy Loading' },
+        { name: 'GSAP' },
+        { name: 'Responsive Web Design' },
+        { name: 'Front-End Development' },
+        { name: 'Figma' },
       ],
     },
     {
-      title: 'Tools & Others',
+      title: 'Tools & Environment',
       icon: 'tools',
       skills: [
-        { name: 'Nx Workspace', level: 75 },
-        { name: 'Git & GitHub', level: 85 },
-        { name: 'Agile/Scrum', level: 80 },
-        { name: 'Responsive Design', level: 95 },
-        { name: 'UI/UX Design', level: 85 },
+        { name: 'Git' },
+        { name: 'GitHub' },
+        { name: 'Nx Monorepo' },
+        { name: 'Angular CLI' },
+        { name: 'npm' },
+        { name: 'Postman' },
+        { name: 'ESLint' },
+        { name: 'Visual Studio Code' },
       ],
     },
   ];
@@ -72,8 +83,8 @@ export class SkillsComponent implements AfterViewInit {
   animateSkills(): void {
     // Set initial hidden state
     gsap.set('.skill-category', { y: 80, opacity: 0, scale: 0.88, rotateY: -12 });
-    gsap.set('.skill-progress-fill', { width: 0 });
     gsap.set('.category-icon', { rotation: -180, scale: 0, opacity: 0 });
+    gsap.set('.skill-item', { scale: 0, opacity: 0 });
 
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -106,35 +117,18 @@ export class SkillsComponent implements AfterViewInit {
         },
         '<0.2'
       )
-      // Progress bars fill with wave
+      // Skill tags pop in
       .to(
-        '.skill-progress-fill',
+        '.skill-item',
         {
-          width: (i: number, target: HTMLElement) =>
-            target.getAttribute('data-level') + '%',
-          duration: 1.4,
+          scale: 1,
+          opacity: 1,
+          duration: 0.5,
           stagger: 0.04,
-          ease: 'power3.out',
+          ease: 'back.out(2)',
         },
         '-=0.3'
       );
-
-    // Percentage colour flash after fill
-    ScrollTrigger.create({
-      trigger: '.skills-grid',
-      start: 'top 75%',
-      once: true,
-      onEnter: () => {
-        gsap.to('.skill-percentage', {
-          color: '#667eea',
-          duration: 0.25,
-          stagger: 0.04,
-          delay: 0.8,
-          yoyo: true,
-          repeat: 1,
-        });
-      },
-    });
 
     // Hover: card glow lift
     document.querySelectorAll('.skill-category').forEach((card: any) => {
