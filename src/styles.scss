@@ -256,6 +256,147 @@ textarea {
 }
 
 /* ==========================================================================
+   Section Entrance / Exit Animation System
+   ========================================================================== */
+
+/* --- Section Title Reveal: Clip-path wipe from left --- */
+@keyframes titleReveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+  to {
+    clip-path: inset(0 0% 0 0);
+    opacity: 1;
+  }
+}
+
+/* --- Glitch flicker for section titles --- */
+@keyframes glitchFlicker {
+  0%   { transform: none; opacity: 1; }
+  2%   { transform: translate(-3px, 0) skewX(-5deg); opacity: 0.8; }
+  4%   { transform: translate(3px, 0) skewX(5deg); opacity: 1; }
+  6%   { transform: none; opacity: 1; }
+  92%  { transform: none; opacity: 1; }
+  94%  { transform: translate(2px, -1px); opacity: 0.9; }
+  96%  { transform: translate(-2px, 1px); opacity: 1; }
+  100% { transform: none; opacity: 1; }
+}
+
+/* --- Scan-line sweep (horizontal light stripe crossing the section) --- */
+@keyframes scanSweep {
+  0%   { transform: translateX(-100%); opacity: 0.6; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+
+/* --- Underline grow (section title accent line) --- */
+@keyframes underlineGrow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* --- Word-by-word letter drop --- */
+@keyframes letterDrop {
+  from { opacity: 0; transform: translateY(-40px) rotateX(-90deg); }
+  to   { opacity: 1; transform: translateY(0) rotateX(0deg); }
+}
+
+/* --- Shimmer across gradient text --- */
+@keyframes shimmerPass {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* --- Section fade-scale exit --- */
+@keyframes sectionExitFade {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.96) translateY(-30px); }
+}
+
+/* --- Particle burst ring --- */
+@keyframes particleRing {
+  0%   { transform: scale(0); opacity: 0.9; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+/* --- Number count up glow --- */
+@keyframes countGlow {
+  0%, 100% { text-shadow: 0 0 0px transparent; }
+  50%       { text-shadow: 0 0 30px rgba(102, 126, 234, 0.8), 0 0 60px rgba(118, 75, 162, 0.5); }
+}
+
+/* ==========================================================================
+   Section Title – split-word mask reveal system
+   ========================================================================== */
+
+/* The section-title wrapper — glitch loop on idle */
+.section-title {
+  position: relative;
+  display: block;        /* block so word-masks wrap naturally */
+  overflow: visible;
+  animation: glitchFlicker 10s infinite;
+
+  /* Animated underline that grows after title reveals */
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    border-radius: 3px;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: none;
+  }
+
+  &.title-visible::after {
+    animation: underlineGrow 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+}
+
+/* Each word gets a clipping mask  */
+.word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  margin-right: 0.3em;
+  line-height: 1.25;
+}
+
+/* The inner span starts at translateY(110%) — GSAP brings it to 0 */
+.word-inner {
+  display: inline-block;
+  transform: translateY(110%);
+  /* Gradient text needs to be on the inner span for safari */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Scan-line: wider, brighter ── */
+.section-scan-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(102, 126, 234, 0.18) 40%,
+    rgba(240, 147, 251, 0.12) 60%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 3;
+  animation: scanSweep 1.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation-play-state: paused;
+}
+
+/* ==========================================================================
    Custom Cursor (Magnetic & Hover Effects) mouse style
    ========================================================================== */
 /* Hide custom cursor elements by default on touch devices */

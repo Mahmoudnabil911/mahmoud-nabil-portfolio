@@ -2,6 +2,7 @@ import { Component, AfterViewInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SectionAnimationsService } from '../../services/section-animations.service';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -39,47 +40,79 @@ export class ContactComponent implements AfterViewInit {
     },
   ];
 
-  formData = {
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  };
-
+  formData = { name: '', email: '', subject: '', message: '' };
   isSubmitting = false;
   submitSuccess = false;
   submitError = false;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private sectionAnim: SectionAnimationsService
+  ) {}
 
   ngAfterViewInit(): void {
+    // ── Section-level enter/exit ──────────────────────────────
+    this.sectionAnim.initSectionAnimation({
+      sectionSelector: '.contact-section',
+      exitEnabled: false, // last section – keep it visible
+    });
+
+    // ── Content animations ────────────────────────────────────
+    this.animateContact();
+  }
+
+  animateContact(): void {
+    // Set initial state
+    gsap.set('.contact-info', { x: -60, opacity: 0 });
+    gsap.set('.contact-form-wrapper', { x: 60, opacity: 0 });
+    gsap.set('.contact-card', { x: -30, opacity: 0 });
+    gsap.set('.form-group, .submit-btn', { x: 30, opacity: 0 });
+
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: '.contact-section',
-        start: 'top bottom', // Trigger immediately when it enters the screen
+        start: 'top bottom',
         once: true,
       },
     });
 
-    tl.fromTo('.contact-info',
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }
-    )
-      .fromTo('.contact-form-wrapper',
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+    tl.to('.contact-info', {
+        x: 0,
+        opacity: 1,
+        duration: 0.7,
+        ease: 'power3.out',
+      })
+      .to(
+        '.contact-form-wrapper',
+        { x: 0, opacity: 1, duration: 0.7, ease: 'power3.out' },
         '<'
       )
-      .fromTo('.contact-card',
-        { x: -20, opacity: 0 },
-        { x: 0, opacity: 1, stagger: 0.05, duration: 0.3 },
-        '-=0.2'
+      .to(
+        '.contact-card',
+        { x: 0, opacity: 1, stagger: 0.08, duration: 0.5, ease: 'power2.out' },
+        '-=0.3'
       )
-      .fromTo('.form-group, .submit-btn',
-        { x: 20, opacity: 0 },
-        { x: 0, opacity: 1, stagger: 0.05, duration: 0.3 },
+      .to(
+        '.form-group, .submit-btn',
+        { x: 0, opacity: 1, stagger: 0.07, duration: 0.5, ease: 'power2.out' },
         '<'
       );
+
+    // Continuous shimmer on contact cards on hover
+    document.querySelectorAll('.contact-card').forEach((card: any) => {
+      card.addEventListener('mouseenter', () => {
+        gsap.to(card, {
+          boxShadow: '0 0 25px rgba(102, 126, 234, 0.4)',
+          duration: 0.3,
+        });
+      });
+      card.addEventListener('mouseleave', () => {
+        gsap.to(card, {
+          boxShadow: 'none',
+          duration: 0.3,
+        });
+      });
+    });
   }
 
   onSubmit(): void {
@@ -89,17 +122,20 @@ export class ContactComponent implements AfterViewInit {
 
     this.isSubmitting = true;
 
-    const subject = encodeURIComponent(this.formData.subject || 'New Contact from Portfolio');
+    const subject = encodeURIComponent(
+      this.formData.subject || 'New Contact from Portfolio'
+    );
     const body = encodeURIComponent(
       `Name: ${this.formData.name}\n` +
-      `Email: ${this.formData.email}\n\n` +
-      `Message:\n${this.formData.message}`
+        `Email: ${this.formData.email}\n\n` +
+        `Message:\n${this.formData.message}`
     );
 
-    // Open user's default email client in a new tab (if possible) or same window
-    window.open(`mailto:mahmodnabil2328@gmail.com?subject=${subject}&body=${body}`, '_blank');
+    window.open(
+      `mailto:mahmodnabil2328@gmail.com?subject=${subject}&body=${body}`,
+      '_blank'
+    );
 
-    // Show success for a short time
     setTimeout(() => {
       this.isSubmitting = false;
       this.submitSuccess = true;

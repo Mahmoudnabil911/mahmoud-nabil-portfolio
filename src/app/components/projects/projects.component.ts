@@ -1,6 +1,7 @@
 import { Component, AfterViewInit } from '@angular/core';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SectionAnimationsService } from '../../services/section-animations.service';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,7 +22,6 @@ export class ProjectsComponent implements AfterViewInit {
       imageClass: 'contain-img',
       technologies: ['Angular', 'TypeScript', 'RxJS', 'Bootstrap', 'REST API'],
       demoUrl: 'https://cairah.ai/home',
-      // githubUrl: '#',
       highlights: ['AI Integration', 'Real-time Updates', 'Responsive Design'],
     },
     {
@@ -33,9 +33,7 @@ export class ProjectsComponent implements AfterViewInit {
       imageClass: 'babu-img',
       technologies: ['Angular', 'TypeScript', 'Tailwind', 'State Management'],
       demoUrl: 'https://pos.babupos.com/#/dashboard',
-      // githubUrl: '#',
       highlights: ['Real-time Analytics', 'Inventory Management', 'POS Dashboard'],
-      // inProgress: true,
     },
     {
       title: 'Parq',
@@ -45,12 +43,7 @@ export class ProjectsComponent implements AfterViewInit {
       image: '/about-parq.jpg',
       technologies: ['Angular', 'Google Maps API', 'RxJS', 'Payment Gateway'],
       demoUrl: 'https://tryparq.co/',
-      // githubUrl: '#',
-      highlights: [
-        'Real-time Tracking',
-        'Payment Integration',
-        'Maps Integration',
-      ],
+      highlights: ['Real-time Tracking', 'Payment Integration', 'Maps Integration'],
     },
     {
       title: 'Antika World',
@@ -61,9 +54,7 @@ export class ProjectsComponent implements AfterViewInit {
       imageClass: 'contain-img',
       technologies: ['Angular', 'TypeScript', 'Bootstrap', 'State Management'],
       demoUrl: 'https://antika.world/',
-      // githubUrl: '#',
       highlights: ['Cultural Experiences', 'Retail Directory', 'Event Calendar'],
-      // inProgress: true,
     },
     {
       title: 'Deelz CRM',
@@ -75,7 +66,6 @@ export class ProjectsComponent implements AfterViewInit {
       demoUrl: 'https://deelzweb.dopave.com/',
       highlights: ['Nested Routing', 'Standalone Architecture', 'Dashboard UI'],
     },
-
     {
       title: 'LMS Platform',
       subtitle: 'Learning Management System',
@@ -84,7 +74,6 @@ export class ProjectsComponent implements AfterViewInit {
       image: 'lms',
       technologies: ['Angular', 'SCSS', 'RxJS', 'GSAP', 'REST API'],
       demoUrl: '#',
-      // githubUrl: '#',
       highlights: ['Video Streaming', 'Progress Tracking', 'Interactive UI'],
       inProgress: true,
     },
@@ -96,13 +85,21 @@ export class ProjectsComponent implements AfterViewInit {
       image: 'khardah',
       technologies: ['Angular', 'TypeScript', 'Bootstrap', 'State Management'],
       demoUrl: '#',
-      // githubUrl: '#',
       highlights: ['Admin Dashboard', 'Event Management', 'User Roles'],
       inProgress: true,
     },
   ];
 
+  constructor(private sectionAnim: SectionAnimationsService) {}
+
   ngAfterViewInit(): void {
+    // ── Section-level enter/exit ──────────────────────────────
+    this.sectionAnim.initSectionAnimation({
+      sectionSelector: '.projects-section',
+      exitEnabled: true,
+    });
+
+    // ── Content animations ────────────────────────────────────
     this.animateProjects();
     this.init3DTilt();
   }
@@ -114,22 +111,19 @@ export class ProjectsComponent implements AfterViewInit {
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
-
-        const rotateX = ((y - centerY) / centerY) * -10; // Max 10 deg rotation
+        const rotateX = ((y - centerY) / centerY) * -10;
         const rotateY = ((x - centerX) / centerX) * 10;
 
         gsap.to(card, {
-          rotateX: rotateX,
-          rotateY: rotateY,
+          rotateX,
+          rotateY,
           transformPerspective: 1000,
           ease: 'power2.out',
-          duration: 0.4
+          duration: 0.4,
         });
 
-        // Pop out the inner content
         const innerContent = card.querySelector('.project-content');
         const innerImage = card.querySelector('.project-image');
         if (innerContent) gsap.to(innerContent, { translateZ: 50, duration: 0.4 });
@@ -141,9 +135,8 @@ export class ProjectsComponent implements AfterViewInit {
           rotateX: 0,
           rotateY: 0,
           ease: 'elastic.out(1, 0.3)',
-          duration: 1.2
+          duration: 1.2,
         });
-
         const innerContent = card.querySelector('.project-content');
         const innerImage = card.querySelector('.project-image');
         if (innerContent) gsap.to(innerContent, { translateZ: 0, duration: 1.2, ease: 'elastic.out(1, 0.3)' });
@@ -153,18 +146,46 @@ export class ProjectsComponent implements AfterViewInit {
   }
 
   animateProjects(): void {
+    // Set initial state
+    gsap.set('.project-card', { scale: 0.75, opacity: 0, y: 60, rotationY: -15 });
+
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: '.projects-section',
-        start: 'top 90%',
+        start: 'top 82%',
         once: true,
       },
     });
 
-    tl.fromTo('.project-card',
-      { scale: 0.8, opacity: 0, y: 50 },
-      { scale: 1, opacity: 1, y: 0, duration: 1, stagger: 0.15, ease: 'back.out(1.2)' }
-    )
-      .to({}, { duration: 0.8 });
+    // Cards unfold like a fan, then settle
+    tl.to('.project-card', {
+      scale: 1,
+      opacity: 1,
+      y: 0,
+      rotationY: 0,
+      duration: 0.9,
+      stagger: {
+        amount: 0.8,
+        from: 'start',
+      },
+      ease: 'back.out(1.3)',
+    });
+
+    // Highlight badges pop in after cards
+    ScrollTrigger.create({
+      trigger: '.projects-grid',
+      start: 'top 70%',
+      once: true,
+      onEnter: () => {
+        gsap.from('.highlight-badge', {
+          scale: 0,
+          opacity: 0,
+          duration: 0.35,
+          stagger: 0.04,
+          delay: 0.6,
+          ease: 'back.out(2)',
+        });
+      },
+    });
   }
 }

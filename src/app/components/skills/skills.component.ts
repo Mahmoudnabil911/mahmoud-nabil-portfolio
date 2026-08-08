@@ -1,6 +1,7 @@
 import { Component, AfterViewInit } from '@angular/core';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SectionAnimationsService } from '../../services/section-animations.service';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -58,28 +59,101 @@ export class SkillsComponent implements AfterViewInit {
     },
   ];
 
+  constructor(private sectionAnim: SectionAnimationsService) {}
+
   ngAfterViewInit(): void {
+    this.sectionAnim.initSectionAnimation({
+      sectionSelector: '.skills-section',
+      exitEnabled: true,
+    });
     this.animateSkills();
   }
 
   animateSkills(): void {
+    // Set initial hidden state
+    gsap.set('.skill-category', { y: 80, opacity: 0, scale: 0.88, rotateY: -12 });
+    gsap.set('.skill-progress-fill', { width: 0 });
+    gsap.set('.category-icon', { rotation: -180, scale: 0, opacity: 0 });
+
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: '.skills-section',
-        start: 'top 90%',
+        start: 'top 78%',
         once: true,
       },
     });
 
-    tl.fromTo('.skill-category',
-      { y: 60, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.8, stagger: 0.2, ease: 'power3.out' }
-    )
-      .fromTo('.skill-progress-fill',
-        { width: 0 },
-        { width: (i, target) => target.getAttribute('data-level') + '%', duration: 1, stagger: 0.05, ease: 'power2.out' },
-        '-=0.5'
+    // Cards cascade in with 3D flip
+    tl.to('.skill-category', {
+        y: 0,
+        opacity: 1,
+        scale: 1,
+        rotateY: 0,
+        duration: 0.9,
+        stagger: 0.15,
+        ease: 'back.out(1.5)',
+      })
+      // Icons spin in
+      .to(
+        '.category-icon',
+        {
+          rotation: 0,
+          scale: 1,
+          opacity: 1,
+          duration: 0.6,
+          stagger: 0.15,
+          ease: 'back.out(2.5)',
+        },
+        '<0.2'
       )
-      .to({}, { duration: 0.5 });
+      // Progress bars fill with wave
+      .to(
+        '.skill-progress-fill',
+        {
+          width: (i: number, target: HTMLElement) =>
+            target.getAttribute('data-level') + '%',
+          duration: 1.4,
+          stagger: 0.04,
+          ease: 'power3.out',
+        },
+        '-=0.3'
+      );
+
+    // Percentage colour flash after fill
+    ScrollTrigger.create({
+      trigger: '.skills-grid',
+      start: 'top 75%',
+      once: true,
+      onEnter: () => {
+        gsap.to('.skill-percentage', {
+          color: '#667eea',
+          duration: 0.25,
+          stagger: 0.04,
+          delay: 0.8,
+          yoyo: true,
+          repeat: 1,
+        });
+      },
+    });
+
+    // Hover: card glow lift
+    document.querySelectorAll('.skill-category').forEach((card: any) => {
+      card.addEventListener('mouseenter', () => {
+        gsap.to(card, {
+          y: -8,
+          boxShadow: '0 25px 60px rgba(102,126,234,0.25)',
+          duration: 0.35,
+          ease: 'power2.out',
+        });
+      });
+      card.addEventListener('mouseleave', () => {
+        gsap.to(card, {
+          y: 0,
+          boxShadow: 'none',
+          duration: 0.5,
+          ease: 'elastic.out(1, 0.4)',
+        });
+      });
+    });
   }
 }

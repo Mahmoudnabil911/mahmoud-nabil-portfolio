@@ -1,6 +1,7 @@
 import { Component, AfterViewInit } from '@angular/core';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SectionAnimationsService } from '../../services/section-animations.service';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -27,13 +28,7 @@ export class ExperienceComponent implements AfterViewInit {
         'Developed intuitive UI navigation systems, including a dynamic primary application sidebar configured to collapse automatically upon sub-menu route selection.',
         'Engineered a library of 15+ scalable Angular components, reducing code duplication by 40% across the team.',
       ],
-      technologies: [
-        'Angular 16',
-        'Nx Monorepo',
-        'RxJS',
-        'TypeScript',
-        'SCSS',
-      ],
+      technologies: ['Angular 16', 'Nx Monorepo', 'RxJS', 'TypeScript', 'SCSS'],
     },
     {
       company: 'Cairah',
@@ -49,13 +44,7 @@ export class ExperienceComponent implements AfterViewInit {
         'Developed complex layout components, including a custom Swiper display that maintains center-card expansion by default.',
         'Enhanced Angular routing and SEO metrics, elevating platform user engagement by 30%.',
       ],
-      technologies: [
-        'Angular',
-        'TypeScript',
-        'SCSS',
-        'GSAP',
-        'SEO',
-      ],
+      technologies: ['Angular', 'TypeScript', 'SCSS', 'GSAP', 'SEO'],
     },
     {
       company: 'Sahm',
@@ -101,28 +90,72 @@ export class ExperienceComponent implements AfterViewInit {
     },
   ];
 
+  constructor(private sectionAnim: SectionAnimationsService) {}
+
   ngAfterViewInit(): void {
+    // ── Section-level enter/exit ──────────────────────────────
+    this.sectionAnim.initSectionAnimation({
+      sectionSelector: '.experience-section',
+      exitEnabled: true,
+    });
+
+    // ── Content animations ────────────────────────────────────
     this.animateTimeline();
   }
 
   animateTimeline(): void {
+    gsap.set('.timeline-marker', { scale: 0, opacity: 0 });
+    gsap.set('.timeline-content', {
+      y: 80,
+      opacity: 0,
+      rotationX: -20,
+      transformOrigin: 'top center',
+    });
+
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: '.experience-section',
-        start: 'top 90%',
+        start: 'top 82%',
         once: true,
       },
     });
 
-    tl.fromTo('.timeline-marker',
-      { scale: 0, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 0.6, stagger: 0.2, ease: 'back.out(2)' }
-    )
-      .fromTo('.timeline-content',
-        { y: 100, opacity: 0, rotationX: -30, transformOrigin: 'top center' },
-        { y: 0, opacity: 1, rotationX: 0, duration: 1, stagger: 0.2, ease: 'power3.out' },
-        '<0.2'
-      )
-      .to({}, { duration: 0.5 });
+    tl.to('.timeline-marker', {
+        scale: 1,
+        opacity: 1,
+        duration: 0.5,
+        stagger: 0.18,
+        ease: 'back.out(3)',
+      })
+      .to(
+        '.timeline-content',
+        {
+          y: 0,
+          opacity: 1,
+          rotationX: 0,
+          duration: 0.9,
+          stagger: 0.18,
+          ease: 'power3.out',
+        },
+        '<0.1'
+      );
+
+    // Tech tags pop in with bounce
+    ScrollTrigger.create({
+      trigger: '.timeline',
+      start: 'top 75%',
+      once: true,
+      onEnter: () => {
+        document.querySelectorAll('.tech-tag').forEach((tag, i) => {
+          gsap.from(tag, {
+            opacity: 0,
+            scale: 0.5,
+            duration: 0.4,
+            delay: i * 0.04,
+            ease: 'back.out(2)',
+          });
+        });
+      },
+    });
   }
 }

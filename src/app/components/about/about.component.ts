@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SectionAnimationsService } from '../../services/section-animations.service';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,41 +13,86 @@ gsap.registerPlugin(ScrollTrigger);
 })
 export class AboutComponent implements OnInit, AfterViewInit {
   stats = [
-    { value: '3+', label: 'Years Experience' },
-    { value: '7+', label: 'Projects Completed' },
-    { value: '5+', label: 'Technologies' },
-    { value: '100%', label: 'Client Satisfaction' },
+    { value: '3+', label: 'Years Experience',    numericEnd: 3,   suffix: '+' },
+    { value: '7+', label: 'Projects Completed',  numericEnd: 7,   suffix: '+' },
+    { value: '5+', label: 'Technologies',        numericEnd: 5,   suffix: '+' },
+    { value: '100%', label: 'Client Satisfaction', numericEnd: 100, suffix: '%' },
   ];
 
-  ngOnInit(): void { }
+  constructor(private sectionAnim: SectionAnimationsService) {}
+
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
+    this.sectionAnim.initSectionAnimation({
+      sectionSelector: '.about-section',
+      exitEnabled: true,
+    });
     this.animateOnScroll();
   }
 
   animateOnScroll(): void {
+    // Set initial states
+    gsap.set('.about-image',  { x: '-15vw', opacity: 0, rotate: -8 });
+    gsap.set('.about-content', { x: '15vw', opacity: 0 });
+    gsap.set('.spec-item',    { y: 40, opacity: 0, scale: 0.85 });
+    gsap.set('.stat-card',    { y: 60, scale: 0.7, opacity: 0 });
+
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: '.about-section',
-        start: 'top 90%',
+        start: 'top 80%',
         once: true,
       },
     });
 
-    tl.fromTo('.about-image', 
-        { x: '-100vw', opacity: 0, rotation: -15 },
-        { x: 0, opacity: 1, rotation: 0, duration: 1, ease: 'power3.out' }
-      )
-      .fromTo('.about-content', 
-        { x: '100vw', opacity: 0 },
-        { x: 0, opacity: 1, duration: 1, ease: 'power3.out' }, 
-        '<'
-      )
-      .fromTo('.stat-card', 
-        { y: 100, scale: 0.8, opacity: 0 },
-        { y: 0, scale: 1, opacity: 1, duration: 0.8, stagger: 0.2, ease: 'back.out(1.5)' }, 
-        '-=0.5'
-      )
-      .to({}, { duration: 0.5 });
+    tl.to('.about-image', {
+        x: 0, opacity: 1, rotate: 0,
+        duration: 1.2, ease: 'power4.out',
+      })
+      .to('.about-content', {
+        x: 0, opacity: 1,
+        duration: 1.2, ease: 'power4.out',
+      }, '<0.1')
+      .to('.spec-item', {
+        y: 0, opacity: 1, scale: 1,
+        duration: 0.5, stagger: 0.08, ease: 'back.out(2)',
+      }, '-=0.6')
+      .to('.stat-card', {
+        y: 0, scale: 1, opacity: 1,
+        duration: 0.7, stagger: 0.12, ease: 'back.out(2)',
+      }, '-=0.3');
+
+    // ── Counter animation — numbers count up ────────────────
+    ScrollTrigger.create({
+      trigger: '.stats-grid',
+      start: 'top 82%',
+      once: true,
+      onEnter: () => {
+        document.querySelectorAll('.stat-value').forEach((el, i) => {
+          const stat = this.stats[i];
+          if (!stat) return;
+          const obj = { val: 0 };
+          gsap.to(obj, {
+            val: stat.numericEnd,
+            duration: 1.8,
+            delay: i * 0.15,
+            ease: 'power2.out',
+            roundProps: 'val',
+            onUpdate: () => {
+              el.textContent = obj.val + stat.suffix;
+            },
+          });
+          // Glow pulse at end
+          gsap.to(el, {
+            textShadow: '0 0 40px rgba(102,126,234,1)',
+            duration: 0.4,
+            delay: i * 0.15 + 1.8,
+            yoyo: true,
+            repeat: 1,
+          });
+        });
+      },
+    });
   }
 }

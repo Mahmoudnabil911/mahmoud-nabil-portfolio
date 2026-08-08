@@ -1,10 +1,163 @@
 // App Component Styles
 :host {
-    display: block;
-    min-height: 100vh;
+  display: block;
+  min-height: 100vh;
 }
 
 main {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PRELOADER
+══════════════════════════════════════════════════════════════ */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #0d0d0d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 40%, rgba(102, 126, 234, 0.15) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 60%, rgba(118, 75, 162, 0.12) 0%, transparent 60%);
+    pointer-events: none;
+  }
+}
+
+.preloader-inner {
+  text-align: center;
+  width: 500px;
+  max-width: 90vw;
+}
+
+.preloader-code {
+  font-family: 'Fira Code', 'Courier New', monospace;
+  font-size: clamp(0.8rem, 1.5vw, 1.1rem);
+  text-align: left;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '● ● ●';
+    position: absolute;
+    top: 0.75rem;
+    left: 1rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.4rem;
+    color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+.pl-line {
+  display: block;
+  margin-top: 1.2rem;
+  opacity: 0;
+  transform: translateX(-20px);
+  white-space: nowrap;
+  line-height: 1.8;
+
+  &:first-child { margin-top: 1.5rem; }
+}
+
+.pl-kw  { color: #c792ea; }  // purple – keywords
+.pl-id  { color: #82aaff; }  // blue   – identifiers
+.pl-fn  { color: #f78c6c; }  // orange – functions/new
+.pl-str { color: #c3e88d; }  // green  – strings
+.pl-punc{ color: #89ddff; }  // cyan   – punctuation
+
+.preloader-progress {
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.preloader-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+  border-radius: 2px;
+  box-shadow: 0 0 12px rgba(102, 126, 234, 0.8);
+  transition: width 0.05s linear;
+}
+
+.preloader-pct {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.1em;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   NOISE GRAIN OVERLAY
+══════════════════════════════════════════════════════════════ */
+.noise-overlay {
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  animation: noise-shift 0.15s steps(1) infinite;
+  will-change: transform;
+}
+
+@keyframes noise-shift {
+  0%  { transform: translate(0, 0); }
+  10% { transform: translate(-2%, -2%); }
+  20% { transform: translate(2%, 2%); }
+  30% { transform: translate(-1%, 1%); }
+  40% { transform: translate(1%, -1%); }
+  50% { transform: translate(-2%, 2%); }
+  60% { transform: translate(2%, -2%); }
+  70% { transform: translate(1%, 1%); }
+  80% { transform: translate(-1%, -1%); }
+  90% { transform: translate(2%, 1%); }
+  100%{ transform: translate(0, 0); }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CURSOR TRAIL CANVAS
+══════════════════════════════════════════════════════════════ */
+.cursor-trail-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9997;
+  width: 100%;
+  height: 100%;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SECTION TITLE SPLIT — each word wraps a reveal mask
+══════════════════════════════════════════════════════════════ */
+.word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  margin-right: 0.25em;
+}
+
+.word-inner {
+  display: inline-block;
+  transform: translateY(110%);
 }

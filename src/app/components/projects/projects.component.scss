@@ -12,11 +12,8 @@
     font-size: 3rem;
     font-weight: 700;
     text-align: center;
-    margin-bottom: 4rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    margin-bottom: 4.5rem;
+    /* gradient applied per .word-inner in global styles */
 }
 
 .projects-grid {
@@ -31,14 +28,38 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     overflow: hidden;
-    transition: box-shadow 0.3s ease, border-color 0.3s ease;
-    /* removed transform from transition so GSAP can control it smoothly */
+    transition: box-shadow 0.4s ease, border-color 0.4s ease;
     transform-style: preserve-3d;
-    perspective: 1000px;
+    perspective: 1200px;
+    position: relative;
+
+    /* Shimmer sweep on hover */
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 60%;
+        height: 100%;
+        background: linear-gradient(
+            105deg,
+            transparent 40%,
+            rgba(255, 255, 255, 0.07) 50%,
+            transparent 60%
+        );
+        z-index: 5;
+        pointer-events: none;
+        transition: left 0s;
+    }
+
+    &:hover::before {
+        left: 150%;
+        transition: left 0.7s ease;
+    }
 
     &:hover {
-        box-shadow: 0 20px 50px rgba(102, 126, 234, 0.2);
-        border-color: rgba(102, 126, 234, 0.3);
+        box-shadow: 0 30px 70px rgba(102, 126, 234, 0.25), 0 0 0 1px rgba(102,126,234,0.2);
+        border-color: rgba(102, 126, 234, 0.4);
     }
 }
 
