@@ -206,6 +206,83 @@ textarea {
     }
 }
 
+/* ════════════════════════════════════════════════════════════════
+   MOBILE PERFORMANCE — disable heavy GPU effects on touch devices
+   ════════════════════════════════════════════════════════════════ */
+@media (pointer: coarse), (max-width: 768px) {
+
+    /* Stop noise grain animation loop — saves continuous rAF + paint */
+    .noise-overlay {
+        animation: none !important;
+        display: none !important;
+    }
+
+    /* No cursor trail canvas on mobile */
+    .cursor-trail-canvas {
+        display: none !important;
+    }
+
+    /* Reduce backdrop-filter cost — simpler on mobile */
+    .glass,
+    .timeline-content,
+    .skill-category,
+    .project-card,
+    .stat-card {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    /* Reduce blob blur — filter: blur() is expensive */
+    .blob {
+        filter: blur(30px) !important; /* was 60px */
+        opacity: 0.2 !important;
+    }
+
+    /* Disable glitch animation on titles — not visible on small screens */
+    .section-title {
+        animation: none !important;
+    }
+
+    /* GPU hint for animated elements */
+    .hero-content,
+    .hero-title,
+    .hero-subtitle,
+    .hero-cta,
+    .stat-card,
+    .project-card,
+    .skill-category,
+    .timeline-content {
+        will-change: transform, opacity;
+    }
+
+    /* Disable shimmer sweep on project cards — pseudo + transition is heavy */
+    .project-card::before {
+        display: none !important;
+    }
+
+    /* Preloader: hide code block to speed up display */
+    .preloader-code {
+        font-size: 0.7rem;
+    }
+}
+
+/* prefers-reduced-motion — respect user OS setting */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .noise-overlay,
+    .cursor-trail-canvas,
+    .blob {
+        display: none !important;
+    }
+}
+
 /* Loading State */
 .loading {
     display: inline-block;

@@ -10,6 +10,10 @@ export interface SectionAnimationConfig {
   exitEnabled?: boolean;
 }
 
+const isMobile = (): boolean =>
+  window.matchMedia('(pointer: coarse), (max-width: 768px)').matches ||
+  navigator.maxTouchPoints > 0;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -43,10 +47,17 @@ export class SectionAnimationsService {
     section.style.position = 'relative';
     section.style.overflow = 'hidden';
 
-    // ── inject scan-line ──────────────────────────────────────
-    const scanLine = document.createElement('div');
-    scanLine.className = 'section-scan-line';
-    section.appendChild(scanLine);
+    const mobile = isMobile();
+
+    // ── inject scan-line (desktop only) ──────────────────────
+    if (!mobile) {
+      const scanLine = document.createElement('div');
+      scanLine.className = 'section-scan-line';
+      section.appendChild(scanLine);
+
+      // Will be fired on scroll enter below
+      (section as any).__scanLine = scanLine;
+    }
 
     // ── title split + reveal ──────────────────────────────────
     const titleSel = titleSelector ?? `${sectionSelector} .section-title`;
@@ -56,40 +67,55 @@ export class SectionAnimationsService {
 
       ScrollTrigger.create({
         trigger: section,
-        start: 'top 80%',
+        start: 'top 82%',
         once: true,
         onEnter: () => {
-          // Fire scan-line
-          scanLine.style.animationPlayState = 'running';
+          const scanLine = (section as any).__scanLine;
+          if (scanLine) scanLine.style.animationPlayState = 'running';
 
           // Animate each word-inner upward out of its mask
           gsap.to(titleEl.querySelectorAll('.word-inner'), {
             y: 0,
-            duration: 0.8,
-            stagger: 0.07,
+            duration: mobile ? 0.5 : 0.8,
+            stagger: mobile ? 0.04 : 0.07,
             ease: 'power4.out',
           });
 
           // Underline grows
-          setTimeout(() => titleEl.classList.add('title-visible'), 600);
+          setTimeout(() => titleEl.classList.add('title-visible'), mobile ? 400 : 600);
         },
       });
     }
 
-    // ── exit: section dims & blurs as user scrolls past ───────
+    // ── exit animation ────────────────────────────────────────
     if (exitEnabled) {
-      gsap.to(section, {
-        opacity: 0.12,
-        scale: 0.97,
-        filter: 'blur(6px)',
-        ease: 'none',
-        scrollTrigger: {
-          trigger: section,
-          start: 'bottom 15%',
-          end: 'bottom top',
-          scrub: 2,
-        },
-      });
+      if (mobile) {
+        // Mobile: opacity only — NO blur/scale (both cause jank)
+        gsap.to(section, {
+          opacity: 0.2,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'bottom 20%',
+            end: 'bottom top',
+            scrub: 1,
+          },
+        });
+      } else {
+        // Desktop: full cinematic exit
+        gsap.to(section, {
+          opacity: 0.12,
+          scale: 0.97,
+          filter: 'blur(6px)',
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'bottom 15%',
+            end: 'bottom top',
+            scrub: 2,
+          },
+        });
+      }
     }
   }
 
