@@ -14,26 +14,38 @@ gsap.registerPlugin(ScrollTrigger);
 export class ProjectsComponent implements AfterViewInit {
   projects = [
     {
-      title: 'Cairah',
-      subtitle: 'AI Healthcare Platform',
-      description:
-        'Comprehensive healthcare platform with AI-powered diagnostics, patient management, and telemedicine features. Built with Angular for seamless user experience.',
-      image: '/cairah_logo.gif',
-      imageClass: 'contain-img',
-      technologies: ['Angular', 'TypeScript', 'RxJS', 'Bootstrap', 'REST API'],
-      demoUrl: 'https://cairah.ai/home',
-      highlights: ['AI Integration', 'Real-time Updates', 'Responsive Design'],
-    },
-    {
       title: 'Babu POS / Dashboard',
-      subtitle: 'Analytics & Inventory System',
+      subtitle: 'Restaurant POS & Management System',
       description:
-        'Built a responsive analytics dashboard focused on complex data visualization. Maintained and engineered core frontend modules including invoice templates and dynamic product variation rows.',
+        'Developed a comprehensive restaurant POS and management system supporting Arabic and English localization with dynamic RTL/LTR layout switching. Integrated RESTful APIs across 11+ business modules and built reusable components for POS operations and Dashboard Analytics.',
       image: '/assets/unnamed-transparent.png',
       imageClass: 'babu-img',
-      technologies: ['Angular', 'TypeScript', 'Tailwind', 'State Management'],
+      technologies: ['Angular', 'TypeScript', 'RESTful APIs', 'ngx-translate', 'RTL'],
       demoUrl: 'https://pos.babupos.com/#/dashboard',
-      highlights: ['Real-time Analytics', 'Inventory Management', 'POS Dashboard'],
+      highlights: ['RTL/LTR Switching', '11+ Business Modules', 'Kitchen Station'],
+    },
+    {
+      title: 'Cairah',
+      subtitle: 'AI Healthcare Landing Page',
+      description:
+        'Engineered the official AI healthcare landing page using Angular, GSAP, and ScrollTrigger. Integrated backend APIs to dynamically retrieve personalized Q&A results based on user inputs and implemented Reactive Forms for Early Access.',
+      image: '/cairah_logo.gif',
+      imageClass: 'contain-img',
+      technologies: ['Angular', 'TypeScript', 'SCSS', 'Reactive Forms', 'GSAP', 'ScrollTrigger'],
+      demoUrl: 'https://cairah.ai/home',
+      highlights: ['GSAP Animations', 'Dynamic Data', 'Reactive Forms'],
+    },
+
+    {
+      title: 'Celebrity Dashboard',
+      subtitle: 'Celebrity Management Dashboard',
+      description:
+        'A centralized dashboard for managing celebrities, their profiles, and beauty product collaborations, including campaigns, product promotions, and brand partnerships.',
+      image: '/assets/logo-dark.svg',
+      imageClass: 'contain-img',
+      technologies: ['Angular', 'TypeScript', 'REST API', 'State Management'],
+      demoUrl: 'https://celebrity-dashboard.eboutiques.com/celebrities/details',
+      highlights: ['Profile Management', 'Campaign Tracking', 'Brand Partnerships'],
     },
     {
       title: 'Parq',
@@ -90,7 +102,7 @@ export class ProjectsComponent implements AfterViewInit {
     },
   ];
 
-  constructor(private sectionAnim: SectionAnimationsService) {}
+  constructor(private sectionAnim: SectionAnimationsService) { }
 
   ngAfterViewInit(): void {
     // ── Section-level enter/exit ──────────────────────────────
