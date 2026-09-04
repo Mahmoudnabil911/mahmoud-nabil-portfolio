@@ -47,11 +47,13 @@ export class AppComponent implements AfterViewInit {
   // ══════════════════════════════════════════════════════════════
   runPreloader(): void {
     const preloader = document.getElementById('preloader');
-    const bar       = document.getElementById('preloader-bar');
-    const pct       = document.getElementById('preloader-pct');
-    const l1        = document.getElementById('pl-l1');
-    const l2        = document.getElementById('pl-l2');
-    const l3        = document.getElementById('pl-l3');
+    const bar = document.getElementById('preloader-bar');
+    const pct = document.getElementById('preloader-pct');
+    const l1 = document.getElementById('pl-l1');
+    const l2 = document.getElementById('pl-l2');
+    const l3 = document.getElementById('pl-l3');
+    const l4 = document.getElementById('pl-l4');
+    const l5 = document.getElementById('pl-l5');
 
     if (!preloader || !bar || !pct) return;
 
@@ -72,17 +74,33 @@ export class AppComponent implements AfterViewInit {
     tl.to(l1, { opacity: 1, x: 0, duration: 0.35, ease: 'power2.out' }, t1)
       .to(l2, { opacity: 1, x: 0, duration: 0.35, ease: 'power2.out' }, t2)
       .to(l3, { opacity: 1, x: 0, duration: 0.35, ease: 'power2.out' }, t3)
+      .to(
+        l4,
+        { opacity: 1, x: 0, duration: 0.35, ease: 'power2.out' },
+        t3 + 0.2,
+      )
+      .to(
+        l5,
+        { opacity: 1, x: 0, duration: 0.35, ease: 'power2.out' },
+        t3 + 0.4,
+      )
       .to({}, { duration: hold }, holdAt);
 
     // Progress bar
     let progress = 0;
     const step = mobile ? 12 : 6;
-    const interval = setInterval(() => {
-      progress += Math.random() * step + step / 2;
-      if (progress >= 100) { progress = 100; clearInterval(interval); }
-      if (bar) bar.style.width = progress + '%';
-      if (pct) pct.textContent = Math.round(progress) + '%';
-    }, mobile ? 40 : 60);
+    const interval = setInterval(
+      () => {
+        progress += Math.random() * step + step / 2;
+        if (progress >= 100) {
+          progress = 100;
+          clearInterval(interval);
+        }
+        if (bar) bar.style.width = progress + '%';
+        if (pct) pct.textContent = Math.round(progress) + '%';
+      },
+      mobile ? 40 : 60,
+    );
   }
 
   private dismissPreloader(preloader: HTMLElement, mobile: boolean): void {
@@ -113,18 +131,32 @@ export class AppComponent implements AfterViewInit {
     // CSS already hides cursor on touch — only wire events for desktop
     if (isMobile()) return;
 
-    const cursor   = document.getElementById('custom-cursor');
+    const cursor = document.getElementById('custom-cursor');
     const follower = document.getElementById('custom-cursor-follower');
     if (!cursor || !follower) return;
 
-    const cursorX   = gsap.quickTo(cursor,   'x', { duration: 0.08, ease: 'power3' });
-    const cursorY   = gsap.quickTo(cursor,   'y', { duration: 0.08, ease: 'power3' });
-    const followerX = gsap.quickTo(follower, 'x', { duration: 0.25, ease: 'power3' });
-    const followerY = gsap.quickTo(follower, 'y', { duration: 0.25, ease: 'power3' });
+    const cursorX = gsap.quickTo(cursor, 'x', {
+      duration: 0.08,
+      ease: 'power3',
+    });
+    const cursorY = gsap.quickTo(cursor, 'y', {
+      duration: 0.08,
+      ease: 'power3',
+    });
+    const followerX = gsap.quickTo(follower, 'x', {
+      duration: 0.25,
+      ease: 'power3',
+    });
+    const followerY = gsap.quickTo(follower, 'y', {
+      duration: 0.25,
+      ease: 'power3',
+    });
 
     window.addEventListener('mousemove', (e) => {
-      cursorX(e.clientX);   cursorY(e.clientY);
-      followerX(e.clientX); followerY(e.clientY);
+      cursorX(e.clientX);
+      cursorY(e.clientY);
+      followerX(e.clientX);
+      followerY(e.clientY);
     });
 
     document
@@ -149,11 +181,21 @@ export class AppComponent implements AfterViewInit {
       btn.addEventListener('mousemove', (e: MouseEvent) => {
         const rect = btn.getBoundingClientRect();
         const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top  - rect.height / 2;
-        gsap.to(btn, { x: x * 0.35, y: y * 0.35, duration: 0.4, ease: 'power2.out' });
+        const y = e.clientY - rect.top - rect.height / 2;
+        gsap.to(btn, {
+          x: x * 0.35,
+          y: y * 0.35,
+          duration: 0.4,
+          ease: 'power2.out',
+        });
       });
       btn.addEventListener('mouseleave', () => {
-        gsap.to(btn, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.4)' });
+        gsap.to(btn, {
+          x: 0,
+          y: 0,
+          duration: 0.6,
+          ease: 'elastic.out(1, 0.4)',
+        });
       });
     });
   }
@@ -162,25 +204,37 @@ export class AppComponent implements AfterViewInit {
   // PARTICLE TRAIL — desktop only (heavy canvas rAF loop)
   // ══════════════════════════════════════════════════════════════
   initParticleTrail(): void {
-    const canvas = document.getElementById('cursor-trail-canvas') as HTMLCanvasElement;
+    const canvas = document.getElementById(
+      'cursor-trail-canvas',
+    ) as HTMLCanvasElement;
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d')!;
-    canvas.width  = window.innerWidth;
+    canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
     window.addEventListener('resize', () => {
-      canvas.width  = window.innerWidth;
+      canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     });
 
     const particles: {
-      x: number; y: number; vx: number; vy: number;
-      life: number; maxLife: number; r: number; hue: number;
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      life: number;
+      maxLife: number;
+      r: number;
+      hue: number;
     }[] = [];
 
-    let mx = -999, my = -999;
-    window.addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; });
+    let mx = -999,
+      my = -999;
+    window.addEventListener('mousemove', (e) => {
+      mx = e.clientX;
+      my = e.clientY;
+    });
 
     const colors = [240, 270, 300, 200];
 
@@ -207,16 +261,26 @@ export class AppComponent implements AfterViewInit {
 
       for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i];
-        p.x  += p.vx;
-        p.y  += p.vy;
+        p.x += p.vx;
+        p.y += p.vy;
         p.vy -= 0.04;
         p.life -= 0.025 / p.maxLife;
-        if (p.life <= 0) { particles.splice(i, 1); continue; }
+        if (p.life <= 0) {
+          particles.splice(i, 1);
+          continue;
+        }
 
         const radius = p.r * p.life;
         ctx.save();
         ctx.globalAlpha = p.life * 0.7;
-        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, radius * 2.5);
+        const grad = ctx.createRadialGradient(
+          p.x,
+          p.y,
+          0,
+          p.x,
+          p.y,
+          radius * 2.5,
+        );
         grad.addColorStop(0, `hsla(${p.hue}, 90%, 70%, 1)`);
         grad.addColorStop(1, `hsla(${p.hue}, 90%, 70%, 0)`);
         ctx.fillStyle = grad;
