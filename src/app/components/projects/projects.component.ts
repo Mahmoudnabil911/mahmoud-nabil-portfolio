@@ -133,7 +133,7 @@ export class ProjectsComponent implements AfterViewInit {
       title: 'LMS Platform',
       subtitle: 'Learning Management System',
       description:
-        'Architected a dynamic learning system with progress tracking and modular content delivery.',
+        'Developed frontend features for a learning management platform, including responsive course pages, interactive UI components, and selected REST API integrations.',
       image: 'lms',
       technologies: ['Angular', 'SCSS', 'RxJS', 'GSAP', 'REST API'],
       demoUrl: '#',

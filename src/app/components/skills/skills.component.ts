@@ -64,12 +64,7 @@ export class SkillsComponent implements AfterViewInit {
     {
       title: 'Tools & Workflow',
       icon: 'tools',
-      skills: [
-        { name: 'Git' },
-        { name: 'GitHub' },
-        { name: 'Nx Monorepo' },
-        { name: 'Postman' },
-      ],
+      skills: [{ name: 'Git' }, { name: 'GitHub' }, { name: 'Postman' }],
     },
   ];
 

@@ -13,10 +13,10 @@ gsap.registerPlugin(ScrollTrigger);
 })
 export class AboutComponent implements OnInit, AfterViewInit {
   stats = [
-    { value: '3+', label: 'Years Experience',    numericEnd: 3,   suffix: '+' },
-    { value: '7+', label: 'Projects Completed',  numericEnd: 7,   suffix: '+' },
-    { value: '5+', label: 'Technologies',        numericEnd: 5,   suffix: '+' },
-    { value: '100%', label: 'Client Satisfaction', numericEnd: 100, suffix: '%' },
+    { value: '3+', label: 'Years Experience', numericEnd: 3, suffix: '+' },
+    { value: '10+', label: 'Projects', numericEnd: 10, suffix: '+' },
+    { value: '2', label: 'Frontend Frameworks', numericEnd: 2, suffix: '' },
+    { value: '11+', label: 'Business Modules', numericEnd: 11, suffix: '+' },
   ];
 
   constructor(private sectionAnim: SectionAnimationsService) {}
@@ -33,10 +33,10 @@ export class AboutComponent implements OnInit, AfterViewInit {
 
   animateOnScroll(): void {
     // Set initial states
-    gsap.set('.about-image',  { x: '-15vw', opacity: 0, rotate: -8 });
+    gsap.set('.about-image', { x: '-15vw', opacity: 0, rotate: -8 });
     gsap.set('.about-content', { x: '15vw', opacity: 0 });
-    gsap.set('.spec-item',    { y: 40, opacity: 0, scale: 0.85 });
-    gsap.set('.stat-card',    { y: 60, scale: 0.7, opacity: 0 });
+    gsap.set('.spec-item', { y: 40, opacity: 0, scale: 0.85 });
+    gsap.set('.stat-card', { y: 60, scale: 0.7, opacity: 0 });
 
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -47,21 +47,46 @@ export class AboutComponent implements OnInit, AfterViewInit {
     });
 
     tl.to('.about-image', {
-        x: 0, opacity: 1, rotate: 0,
-        duration: 1.2, ease: 'power4.out',
-      })
-      .to('.about-content', {
-        x: 0, opacity: 1,
-        duration: 1.2, ease: 'power4.out',
-      }, '<0.1')
-      .to('.spec-item', {
-        y: 0, opacity: 1, scale: 1,
-        duration: 0.5, stagger: 0.08, ease: 'back.out(2)',
-      }, '-=0.6')
-      .to('.stat-card', {
-        y: 0, scale: 1, opacity: 1,
-        duration: 0.7, stagger: 0.12, ease: 'back.out(2)',
-      }, '-=0.3');
+      x: 0,
+      opacity: 1,
+      rotate: 0,
+      duration: 1.2,
+      ease: 'power4.out',
+    })
+      .to(
+        '.about-content',
+        {
+          x: 0,
+          opacity: 1,
+          duration: 1.2,
+          ease: 'power4.out',
+        },
+        '<0.1',
+      )
+      .to(
+        '.spec-item',
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.5,
+          stagger: 0.08,
+          ease: 'back.out(2)',
+        },
+        '-=0.6',
+      )
+      .to(
+        '.stat-card',
+        {
+          y: 0,
+          scale: 1,
+          opacity: 1,
+          duration: 0.7,
+          stagger: 0.12,
+          ease: 'back.out(2)',
+        },
+        '-=0.3',
+      );
 
     // ── Counter animation — numbers count up ────────────────
     ScrollTrigger.create({
