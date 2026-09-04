@@ -14,15 +14,71 @@ gsap.registerPlugin(ScrollTrigger);
 export class ProjectsComponent implements AfterViewInit {
   projects = [
     {
+      title: 'Dr. Saif Clinic',
+      subtitle: 'ERP & CRM Dashboard',
+      description:
+        'Built a healthcare ERP and CRM dashboard covering patients, appointments, medical records, prescriptions, invoices, services, purchases, suppliers, employees, payroll, vouchers, and reports, with Arabic RTL support.',
+      image: '/assets/White Smoke.svg',
+      imageClass: 'dr-saif-img',
+      technologies: [
+        'React 19',
+        'TypeScript',
+        'Vite',
+        'TanStack Query',
+        'Zustand',
+        'Tailwind CSS',
+        'i18next',
+        'RESTful APIs',
+      ],
+      demoUrl: 'https://dr-saif-clinic.vercel.app/',
+      highlights: [
+        'Healthcare ERP & CRM',
+        'Arabic RTL Support',
+        'Business Reports',
+      ],
+    },
+    {
+      title: 'React POS System',
+      subtitle: 'POS & Management Dashboard',
+      description:
+        'Developed a responsive POS and management dashboard with reusable components, Zustand state management, Arabic and English localization, RTL/LTR support, responsive layouts, and React Router navigation.',
+      image: '/assets/Pasted image.png',
+      technologies: [
+        'React 19',
+        'TypeScript',
+        'Vite',
+        'Tailwind CSS',
+        'Zustand',
+        'i18next',
+        'React Router',
+      ],
+      demoUrl: 'https://react-pos-system-pi.vercel.app/dashboard',
+      highlights: [
+        'Responsive POS',
+        'Arabic/English Localization',
+        'RTL/LTR Support',
+      ],
+    },
+    {
       title: 'Babu POS / Dashboard',
       subtitle: 'Restaurant POS & Management System',
       description:
         'Developed a comprehensive restaurant POS and management system supporting Arabic and English localization with dynamic RTL/LTR layout switching. Integrated RESTful APIs across 11+ business modules and built reusable components for POS operations and Dashboard Analytics.',
       image: '/assets/unnamed-transparent.png',
       imageClass: 'babu-img',
-      technologies: ['Angular', 'TypeScript', 'RESTful APIs', 'ngx-translate', 'RTL'],
+      technologies: [
+        'Angular',
+        'TypeScript',
+        'RESTful APIs',
+        'ngx-translate',
+        'RTL',
+      ],
       demoUrl: 'https://pos.babupos.com/#/dashboard',
-      highlights: ['RTL/LTR Switching', '11+ Business Modules', 'Kitchen Station'],
+      highlights: [
+        'RTL/LTR Switching',
+        '11+ Business Modules',
+        'Kitchen Station',
+      ],
     },
     {
       title: 'Cairah',
@@ -31,32 +87,18 @@ export class ProjectsComponent implements AfterViewInit {
         'Engineered the official AI healthcare landing page using Angular, GSAP, and ScrollTrigger. Integrated backend APIs to dynamically retrieve personalized Q&A results based on user inputs and implemented Reactive Forms for Early Access.',
       image: '/cairah_logo.gif',
       imageClass: 'contain-img',
-      technologies: ['Angular', 'TypeScript', 'SCSS', 'Reactive Forms', 'GSAP', 'ScrollTrigger'],
+      technologies: [
+        'Angular',
+        'TypeScript',
+        'SCSS',
+        'Reactive Forms',
+        'GSAP',
+        'ScrollTrigger',
+      ],
       demoUrl: 'https://cairah.ai/home',
       highlights: ['GSAP Animations', 'Dynamic Data', 'Reactive Forms'],
     },
 
-    {
-      title: 'Celebrity Dashboard',
-      subtitle: 'Celebrity Management Dashboard',
-      description:
-        'A centralized dashboard for managing celebrities, their profiles, and beauty product collaborations, including campaigns, product promotions, and brand partnerships.',
-      image: '/assets/logo-dark.svg',
-      imageClass: 'contain-img',
-      technologies: ['Angular', 'TypeScript', 'REST API', 'State Management'],
-      demoUrl: 'https://celebrity-dashboard.eboutiques.com/celebrities/details',
-      highlights: ['Profile Management', 'Campaign Tracking', 'Brand Partnerships'],
-    },
-    {
-      title: 'Parq',
-      subtitle: 'Parking Services Platform',
-      description:
-        'Smart parking solution with real-time availability, booking system, payment integration, and location-based services.',
-      image: '/about-parq.jpg',
-      technologies: ['Angular', 'Google Maps API', 'RxJS', 'Payment Gateway'],
-      demoUrl: 'https://tryparq.co/',
-      highlights: ['Real-time Tracking', 'Payment Integration', 'Maps Integration'],
-    },
     {
       title: 'Antika World',
       subtitle: 'Luxury Urban Destination',
@@ -66,7 +108,11 @@ export class ProjectsComponent implements AfterViewInit {
       imageClass: 'contain-img',
       technologies: ['Angular', 'TypeScript', 'Bootstrap', 'State Management'],
       demoUrl: 'https://antika.world/',
-      highlights: ['Cultural Experiences', 'Retail Directory', 'Event Calendar'],
+      highlights: [
+        'Cultural Experiences',
+        'Retail Directory',
+        'Event Calendar',
+      ],
     },
     {
       title: 'Deelz CRM',
@@ -74,7 +120,12 @@ export class ProjectsComponent implements AfterViewInit {
       description:
         'Built and refactored a comprehensive dashboard project using standalone Angular architecture and Tailwind CSS, resolving complex nested routing structures.',
       image: 'deelz',
-      technologies: ['Angular', 'Tailwind CSS', 'TypeScript', 'Standalone Components'],
+      technologies: [
+        'Angular',
+        'Tailwind CSS',
+        'TypeScript',
+        'Standalone Components',
+      ],
       demoUrl: 'https://deelzweb.dopave.com/',
       highlights: ['Nested Routing', 'Standalone Architecture', 'Dashboard UI'],
     },
@@ -89,20 +140,9 @@ export class ProjectsComponent implements AfterViewInit {
       highlights: ['Video Streaming', 'Progress Tracking', 'Interactive UI'],
       inProgress: true,
     },
-    {
-      title: 'Khardah',
-      subtitle: 'Platform for Associations',
-      description:
-        'Community platform for managing associations, events, memberships, and communications with advanced admin dashboard.',
-      image: 'khardah',
-      technologies: ['Angular', 'TypeScript', 'Bootstrap', 'State Management'],
-      demoUrl: '#',
-      highlights: ['Admin Dashboard', 'Event Management', 'User Roles'],
-      inProgress: true,
-    },
   ];
 
-  constructor(private sectionAnim: SectionAnimationsService) { }
+  constructor(private sectionAnim: SectionAnimationsService) {}
 
   ngAfterViewInit(): void {
     // ── Section-level enter/exit ──────────────────────────────
@@ -138,7 +178,8 @@ export class ProjectsComponent implements AfterViewInit {
 
         const innerContent = card.querySelector('.project-content');
         const innerImage = card.querySelector('.project-image');
-        if (innerContent) gsap.to(innerContent, { translateZ: 50, duration: 0.4 });
+        if (innerContent)
+          gsap.to(innerContent, { translateZ: 50, duration: 0.4 });
         if (innerImage) gsap.to(innerImage, { translateZ: 30, duration: 0.4 });
       });
 
@@ -151,15 +192,30 @@ export class ProjectsComponent implements AfterViewInit {
         });
         const innerContent = card.querySelector('.project-content');
         const innerImage = card.querySelector('.project-image');
-        if (innerContent) gsap.to(innerContent, { translateZ: 0, duration: 1.2, ease: 'elastic.out(1, 0.3)' });
-        if (innerImage) gsap.to(innerImage, { translateZ: 0, duration: 1.2, ease: 'elastic.out(1, 0.3)' });
+        if (innerContent)
+          gsap.to(innerContent, {
+            translateZ: 0,
+            duration: 1.2,
+            ease: 'elastic.out(1, 0.3)',
+          });
+        if (innerImage)
+          gsap.to(innerImage, {
+            translateZ: 0,
+            duration: 1.2,
+            ease: 'elastic.out(1, 0.3)',
+          });
       });
     });
   }
 
   animateProjects(): void {
     // Set initial state
-    gsap.set('.project-card', { scale: 0.75, opacity: 0, y: 60, rotationY: -15 });
+    gsap.set('.project-card', {
+      scale: 0.75,
+      opacity: 0,
+      y: 60,
+      rotationY: -15,
+    });
 
     const tl = gsap.timeline({
       scrollTrigger: {

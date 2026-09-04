@@ -45,7 +45,7 @@ export class ExperienceComponent implements AfterViewInit {
         'Developed complex layout components, including a custom Swiper display that maintains center-card expansion by default.',
         'Integrated RESTful APIs to dynamically retrieve and display backend-driven content, including personalized Q&A results based on user inputs.',
         'Implemented Reactive Forms with validation and API integration for Early Access Request and Feedback forms.',
-        'Enhanced Angular routing and on-page SEO structure for the platform\'s public-facing pages.',
+        "Enhanced Angular routing and on-page SEO structure for the platform's public-facing pages.",
       ],
       technologies: ['Angular', 'TypeScript', 'SCSS', 'GSAP', 'SEO'],
     },
@@ -75,10 +75,9 @@ export class ExperienceComponent implements AfterViewInit {
       location: 'Remote',
       description: '',
       achievements: [
-        'Delivered 6+ SPA projects across healthcare, education, and logistics using Angular and Bootstrap.',
-        'Implemented SEO-optimized architectures to improve organic search visibility for client sites.',
+        'Delivered 6+ SPA projects using Angular and React, building responsive interfaces, reusable components, and scalable frontend architectures.',
       ],
-      technologies: ['Angular', 'Bootstrap', 'SEO', 'SPA'],
+      technologies: ['Angular', 'React', 'Bootstrap', 'SPA'],
     },
     {
       company: 'Health Pay',
@@ -130,19 +129,21 @@ export class ExperienceComponent implements AfterViewInit {
         onEnter: () => {
           // Safety fallback: ensure they become visible eventually
           setTimeout(() => {
-            gsap.to('.timeline-content, .tech-tag, .timeline-marker', { opacity: 1 });
+            gsap.to('.timeline-content, .tech-tag, .timeline-marker', {
+              opacity: 1,
+            });
           }, 3000);
-        }
+        },
       },
     });
 
     tl.to('.timeline-marker', {
-        scale: 1,
-        opacity: 1,
-        duration: 0.5,
-        stagger: 0.18,
-        ease: 'back.out(3)',
-      })
+      scale: 1,
+      opacity: 1,
+      duration: 0.5,
+      stagger: 0.18,
+      ease: 'back.out(3)',
+    })
       .to(
         '.timeline-content',
         {
@@ -153,7 +154,7 @@ export class ExperienceComponent implements AfterViewInit {
           stagger: 0.18,
           ease: 'power3.out',
         },
-        '<0.1'
+        '<0.1',
       )
       .to(
         '.tech-tag',
@@ -164,7 +165,7 @@ export class ExperienceComponent implements AfterViewInit {
           stagger: 0.04,
           ease: 'back.out(2)',
         },
-        '-=0.4' // overlap with the end of the content animation
+        '-=0.4', // overlap with the end of the content animation
       );
   }
 }

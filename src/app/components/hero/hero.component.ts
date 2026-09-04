@@ -17,7 +17,8 @@ const isMobile = (): boolean =>
 })
 export class HeroComponent implements OnInit, OnDestroy, AfterViewInit {
   typedText = '';
-  fullText  = 'Building high-performance Angular apps with modern UI/UX and advanced animations.';
+  fullText =
+    'Building high-performance React and Angular applications with modern UI/UX and scalable frontend architecture.';
   typingInterval: any;
 
   ngOnInit(): void {
@@ -53,25 +54,53 @@ export class HeroComponent implements OnInit, OnDestroy, AfterViewInit {
         : { opacity: 1, y: 0, filter: 'blur(0px)', ...extra };
 
     gsap.set(
-      ['.hero-title', '.hero-subtitle', '.hero-location', '.hero-description', '.hero-cta'],
-      fromProps
+      [
+        '.hero-title',
+        '.hero-subtitle',
+        '.hero-location',
+        '.hero-description',
+        '.hero-cta',
+      ],
+      fromProps,
     );
 
     // Mobile: shorter delay (no preloader wait needed — preloader is instant)
     const delay = mobile ? 0.8 : 2.4;
-    const tl    = gsap.timeline({ delay });
+    const tl = gsap.timeline({ delay });
 
-    tl.to('.hero-title',       toBase({ duration: mobile ? 0.6 : 1,   ease: 'power3.out' }))
-      .to('.hero-subtitle',    toBase({ duration: mobile ? 0.5 : 0.9, ease: 'power3.out' }), '-=0.35')
-      .to('.hero-location',    toBase({ duration: mobile ? 0.4 : 0.7, ease: 'power3.out' }), '-=0.3')
-      .to('.hero-description', toBase({ duration: mobile ? 0.4 : 0.7, ease: 'power3.out' }), '-=0.25')
-      .to('.hero-cta',         toBase({ duration: mobile ? 0.4 : 0.8, ease: 'back.out(1.5)' }), '-=0.2');
+    tl.to(
+      '.hero-title',
+      toBase({ duration: mobile ? 0.6 : 1, ease: 'power3.out' }),
+    )
+      .to(
+        '.hero-subtitle',
+        toBase({ duration: mobile ? 0.5 : 0.9, ease: 'power3.out' }),
+        '-=0.35',
+      )
+      .to(
+        '.hero-location',
+        toBase({ duration: mobile ? 0.4 : 0.7, ease: 'power3.out' }),
+        '-=0.3',
+      )
+      .to(
+        '.hero-description',
+        toBase({ duration: mobile ? 0.4 : 0.7, ease: 'power3.out' }),
+        '-=0.25',
+      )
+      .to(
+        '.hero-cta',
+        toBase({ duration: mobile ? 0.4 : 0.8, ease: 'back.out(1.5)' }),
+        '-=0.2',
+      );
 
     // CTA button shimmer — desktop only
     if (!mobile) {
       tl.to('.btn-primary', {
         boxShadow: '0 0 40px rgba(102,126,234,0.6)',
-        duration: 1.2, repeat: -1, yoyo: true, ease: 'sine.inOut',
+        duration: 1.2,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
       });
     }
 
@@ -79,7 +108,8 @@ export class HeroComponent implements OnInit, OnDestroy, AfterViewInit {
     gsap.to('.blob', {
       scale: mobile ? 1.1 : 1.25,
       duration: mobile ? 3 : 4,
-      repeat: -1, yoyo: true,
+      repeat: -1,
+      yoyo: true,
       ease: 'sine.inOut',
       stagger: 0.7,
     });
@@ -95,7 +125,10 @@ export class HeroComponent implements OnInit, OnDestroy, AfterViewInit {
         rotation: Math.random() * 60 - 30,
         ease: 'none',
         scrollTrigger: {
-          trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1.5,
+          trigger: '.hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1.5,
         },
       });
     });
@@ -105,7 +138,10 @@ export class HeroComponent implements OnInit, OnDestroy, AfterViewInit {
         y: -(180 + i * 60),
         ease: 'none',
         scrollTrigger: {
-          trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true,
+          trigger: '.hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
         },
       });
     });
@@ -166,20 +202,24 @@ export class HeroComponent implements OnInit, OnDestroy, AfterViewInit {
     hero.prepend(canvas);
 
     const ctx = canvas.getContext('2d')!;
-    const resize = () => { canvas.width = hero.offsetWidth; canvas.height = hero.offsetHeight; };
+    const resize = () => {
+      canvas.width = hero.offsetWidth;
+      canvas.height = hero.offsetHeight;
+    };
     resize();
     window.addEventListener('resize', resize);
 
     const count = 50; // slightly reduced for performance
     const nodes = Array.from({ length: count }, () => ({
-      x:  Math.random() * canvas.width,
-      y:  Math.random() * canvas.height,
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
       vx: (Math.random() - 0.5) * 0.35,
       vy: (Math.random() - 0.5) * 0.35,
-      r:  1 + Math.random() * 2,
+      r: 1 + Math.random() * 2,
     }));
 
-    let mx = canvas.width / 2, my = canvas.height / 2;
+    let mx = canvas.width / 2,
+      my = canvas.height / 2;
     hero.addEventListener('mousemove', (e) => {
       const rect = hero.getBoundingClientRect();
       mx = e.clientX - rect.left;
@@ -193,17 +233,21 @@ export class HeroComponent implements OnInit, OnDestroy, AfterViewInit {
       nodes.forEach((n) => {
         n.x += n.vx;
         n.y += n.vy;
-        if (n.x < 0 || n.x > canvas.width)  n.vx *= -1;
+        if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
         if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
 
-        const dx = n.x - mx, dy = n.y - my;
+        const dx = n.x - mx,
+          dy = n.y - my;
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < 120) {
           n.vx += (dx / dist) * 0.1;
           n.vy += (dy / dist) * 0.1;
         }
         const speed = Math.sqrt(n.vx * n.vx + n.vy * n.vy);
-        if (speed > 2) { n.vx = (n.vx / speed) * 2; n.vy = (n.vy / speed) * 2; }
+        if (speed > 2) {
+          n.vx = (n.vx / speed) * 2;
+          n.vy = (n.vy / speed) * 2;
+        }
 
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
@@ -216,7 +260,7 @@ export class HeroComponent implements OnInit, OnDestroy, AfterViewInit {
         for (let j = i + 1; j < nodes.length; j++) {
           const dx = nodes[i].x - nodes[j].x;
           const dy = nodes[i].y - nodes[j].y;
-          const d  = Math.sqrt(dx * dx + dy * dy);
+          const d = Math.sqrt(dx * dx + dy * dy);
           if (d < 130) {
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);

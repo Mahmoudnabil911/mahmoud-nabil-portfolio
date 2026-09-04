@@ -22,20 +22,20 @@ export class ContactComponent implements AfterViewInit {
     },
     {
       icon: 'whatsapp',
-      label: 'WhatsApp',
+      label: 'Phone',
       value: '+201027197422',
       link: 'https://wa.me/201027197422',
     },
     {
       icon: 'linkedin',
       label: 'LinkedIn',
-      value: 'Mahmoud Nabil',
+      value: 'linkedin.com/in/mahmoud-nabil-5480821ab',
       link: 'https://www.linkedin.com/in/mahmoud-nabil-5480821ab/',
     },
     {
       icon: 'github',
       label: 'GitHub',
-      value: 'mahmoudnabil',
+      value: 'github.com/MahmoudNabil911',
       link: 'https://github.com/Mahmoudnabil911',
     },
   ];
@@ -47,7 +47,7 @@ export class ContactComponent implements AfterViewInit {
 
   constructor(
     private http: HttpClient,
-    private sectionAnim: SectionAnimationsService
+    private sectionAnim: SectionAnimationsService,
   ) {}
 
   ngAfterViewInit(): void {
@@ -77,25 +77,25 @@ export class ContactComponent implements AfterViewInit {
     });
 
     tl.to('.contact-info', {
-        x: 0,
-        opacity: 1,
-        duration: 0.7,
-        ease: 'power3.out',
-      })
+      x: 0,
+      opacity: 1,
+      duration: 0.7,
+      ease: 'power3.out',
+    })
       .to(
         '.contact-form-wrapper',
         { x: 0, opacity: 1, duration: 0.7, ease: 'power3.out' },
-        '<'
+        '<',
       )
       .to(
         '.contact-card',
         { x: 0, opacity: 1, stagger: 0.08, duration: 0.5, ease: 'power2.out' },
-        '-=0.3'
+        '-=0.3',
       )
       .to(
         '.form-group, .submit-btn',
         { x: 0, opacity: 1, stagger: 0.07, duration: 0.5, ease: 'power2.out' },
-        '<'
+        '<',
       );
 
     // Continuous shimmer on contact cards on hover
@@ -123,17 +123,17 @@ export class ContactComponent implements AfterViewInit {
     this.isSubmitting = true;
 
     const subject = encodeURIComponent(
-      this.formData.subject || 'New Contact from Portfolio'
+      this.formData.subject || 'New Contact from Portfolio',
     );
     const body = encodeURIComponent(
       `Name: ${this.formData.name}\n` +
         `Email: ${this.formData.email}\n\n` +
-        `Message:\n${this.formData.message}`
+        `Message:\n${this.formData.message}`,
     );
 
     window.open(
-      `mailto:mahmodnabil2328@gmail.com?subject=${subject}&body=${body}`,
-      '_blank'
+      `mailto:mahmoudnabil2328@gmail.com?subject=${subject}&body=${body}`,
+      '_blank',
     );
 
     setTimeout(() => {

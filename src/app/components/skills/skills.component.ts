@@ -14,58 +14,61 @@ gsap.registerPlugin(ScrollTrigger);
 export class SkillsComponent implements AfterViewInit {
   skillCategories = [
     {
-      title: 'Core Technologies',
+      title: 'Frontend Technologies',
       icon: 'frontend',
       skills: [
-        { name: 'Angular' },
+        { name: 'React 19' },
+        { name: 'React Router' },
+        { name: 'Angular (12-21)' },
         { name: 'TypeScript' },
         { name: 'JavaScript' },
         { name: 'HTML5' },
         { name: 'CSS3' },
         { name: 'SCSS' },
         { name: 'Tailwind CSS' },
+        { name: 'Bootstrap' },
         { name: 'Angular Material' },
         { name: 'PrimeNG' },
-        { name: 'Bootstrap' },
       ],
     },
     {
-      title: 'Angular Ecosystem & Data',
+      title: 'State, Data & Architecture',
       icon: 'data',
       skills: [
         { name: 'RxJS' },
         { name: 'NgRx' },
         { name: 'Reactive Forms' },
-        { name: 'Angular Router' },
+        { name: 'Zustand' },
+        { name: 'TanStack Query' },
+        { name: 'TanStack Router' },
+        { name: 'RESTful APIs' },
+        { name: 'i18n' },
+        { name: 'RTL/LTR' },
         { name: 'Standalone Components' },
-        { name: 'Dependency Injection' },
-        { name: 'REST APIs' },
+        { name: 'Nx Monorepo' },
       ],
     },
     {
-      title: 'Performance & Design',
+      title: 'Performance & Quality',
       icon: 'animations',
       skills: [
-        { name: 'Optimizing Web Performance' },
-        { name: 'Lazy Loading' },
         { name: 'GSAP' },
+        { name: 'ScrollTrigger' },
+        { name: 'Code Splitting' },
+        { name: 'Lighthouse Optimization' },
+        { name: 'Unit Testing' },
         { name: 'Responsive Web Design' },
-        { name: 'Front-End Development' },
         { name: 'Figma' },
       ],
     },
     {
-      title: 'Tools & Environment',
+      title: 'Tools & Workflow',
       icon: 'tools',
       skills: [
         { name: 'Git' },
         { name: 'GitHub' },
         { name: 'Nx Monorepo' },
-        { name: 'Angular CLI' },
-        { name: 'npm' },
         { name: 'Postman' },
-        { name: 'ESLint' },
-        { name: 'Visual Studio Code' },
       ],
     },
   ];
@@ -82,7 +85,12 @@ export class SkillsComponent implements AfterViewInit {
 
   animateSkills(): void {
     // Set initial hidden state
-    gsap.set('.skill-category', { y: 80, opacity: 0, scale: 0.88, rotateY: -12 });
+    gsap.set('.skill-category', {
+      y: 80,
+      opacity: 0,
+      scale: 0.88,
+      rotateY: -12,
+    });
     gsap.set('.category-icon', { rotation: -180, scale: 0, opacity: 0 });
     gsap.set('.skill-item', { scale: 0, opacity: 0 });
 
@@ -96,14 +104,14 @@ export class SkillsComponent implements AfterViewInit {
 
     // Cards cascade in with 3D flip
     tl.to('.skill-category', {
-        y: 0,
-        opacity: 1,
-        scale: 1,
-        rotateY: 0,
-        duration: 0.9,
-        stagger: 0.15,
-        ease: 'back.out(1.5)',
-      })
+      y: 0,
+      opacity: 1,
+      scale: 1,
+      rotateY: 0,
+      duration: 0.9,
+      stagger: 0.15,
+      ease: 'back.out(1.5)',
+    })
       // Icons spin in
       .to(
         '.category-icon',
@@ -115,7 +123,7 @@ export class SkillsComponent implements AfterViewInit {
           stagger: 0.15,
           ease: 'back.out(2.5)',
         },
-        '<0.2'
+        '<0.2',
       )
       // Skill tags pop in
       .to(
@@ -127,7 +135,7 @@ export class SkillsComponent implements AfterViewInit {
           stagger: 0.04,
           ease: 'back.out(2)',
         },
-        '-=0.3'
+        '-=0.3',
       );
 
     // Hover: card glow lift
